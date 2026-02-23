@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Change Password - Loopin J</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f0df2",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#191022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                    backgroundImage: {
+                        'glass': 'linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #191022; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #332042; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4d3168; 
+        }
+
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .neon-glow {
+            box-shadow: 0 0 10px rgba(127, 13, 242, 0.3), 0 0 20px rgba(127, 13, 242, 0.1);
+        }
+
+        .neon-text-glow {
+             text-shadow: 0 0 10px rgba(127, 13, 242, 0.5);
+        }
+
+        .neon-success-glow {
+            box-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col items-center justify-start text-slate-900 dark:text-slate-100 overflow-x-hidden relative">
+<!-- Abstract Background Elements -->
+<div class="fixed top-[-20%] left-[-10%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
+<div class="fixed bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+<!-- Top App Bar -->
+<header class="w-full max-w-md mx-auto sticky top-0 z-50 pt-2 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-white/5">
+<div class="flex items-center justify-between p-4 pb-4">
+<button aria-label="Go back" class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-white/10 transition-colors text-slate-900 dark:text-white group">
+<span class="material-symbols-outlined text-2xl group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
+</button>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold tracking-tight">Change Password</h2>
+<div class="w-10"></div> <!-- Spacer for alignment -->
+</div>
+</header>
+<!-- Main Content -->
+<main class="w-full max-w-md mx-auto px-6 py-6 flex flex-col gap-6 relative z-10 flex-1">
+<!-- Form Section -->
+<form class="flex flex-col gap-5">
+<!-- Current Password -->
+<div class="flex flex-col gap-2 group">
+<label class="text-sm font-medium text-slate-600 dark:text-slate-300 ml-1" for="current-password">Current Password</label>
+<div class="relative flex items-center glass-panel rounded-xl transition-all duration-300 focus-within:border-primary/50 focus-within:shadow-[0_0_15px_rgba(127,13,242,0.25)]">
+<span class="material-symbols-outlined absolute left-4 text-slate-400 dark:text-slate-500">lock</span>
+<input class="w-full bg-transparent border-none text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 pl-12 pr-12 py-4 rounded-xl focus:ring-0 text-base" id="current-password" placeholder="••••••••" type="password"/>
+<button aria-label="Toggle password visibility" class="absolute right-4 text-slate-400 hover:text-primary transition-colors flex items-center justify-center" type="button">
+<span class="material-symbols-outlined">visibility_off</span>
+</button>
+</div>
+</div>
+<div class="h-px bg-white/5 my-1 w-full"></div>
+<!-- New Password -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-600 dark:text-slate-300 ml-1" for="new-password">New Password</label>
+<div class="relative flex items-center glass-panel rounded-xl transition-all duration-300 focus-within:border-primary/50 focus-within:shadow-[0_0_15px_rgba(127,13,242,0.25)]">
+<span class="material-symbols-outlined absolute left-4 text-slate-400 dark:text-slate-500">key</span>
+<input class="w-full bg-transparent border-none text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 pl-12 pr-12 py-4 rounded-xl focus:ring-0 text-base" id="new-password" placeholder="Enter new password" type="password"/>
+<button aria-label="Toggle password visibility" class="absolute right-4 text-slate-400 hover:text-primary transition-colors flex items-center justify-center" type="button">
+<span class="material-symbols-outlined">visibility_off</span>
+</button>
+</div>
+<!-- Password Strength Meter -->
+<div class="mt-2 p-4 glass-panel rounded-lg border-none bg-black/20">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs font-medium text-slate-400">Password Strength</span>
+<span class="text-xs font-bold text-[#39ff14] neon-text-glow">Strong</span>
+</div>
+<div class="flex gap-1.5 h-1.5 w-full">
+<div class="h-full flex-1 rounded-full bg-[#39ff14] neon-success-glow"></div>
+<div class="h-full flex-1 rounded-full bg-[#39ff14] neon-success-glow"></div>
+<div class="h-full flex-1 rounded-full bg-[#39ff14] neon-success-glow"></div>
+<div class="h-full flex-1 rounded-full bg-slate-700/50"></div>
+</div>
+<p class="text-xs text-slate-500 mt-3 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-primary">check_circle</span>
+                        Must be at least 8 characters
+                    </p>
+</div>
+</div>
+<!-- Confirm Password -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-600 dark:text-slate-300 ml-1" for="confirm-password">Confirm New Password</label>
+<div class="relative flex items-center glass-panel rounded-xl transition-all duration-300 focus-within:border-primary/50 focus-within:shadow-[0_0_15px_rgba(127,13,242,0.25)]">
+<span class="material-symbols-outlined absolute left-4 text-slate-400 dark:text-slate-500">lock_reset</span>
+<input class="w-full bg-transparent border-none text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 pl-12 pr-12 py-4 rounded-xl focus:ring-0 text-base" id="confirm-password" placeholder="Re-enter new password" type="password"/>
+<button aria-label="Toggle password visibility" class="absolute right-4 text-slate-400 hover:text-primary transition-colors flex items-center justify-center" type="button">
+<span class="material-symbols-outlined">visibility_off</span>
+</button>
+</div>
+</div>
+<!-- Spacer -->
+<div class="h-4"></div>
+<!-- Action Button -->
+<button class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-primary via-[#9d4edd] to-primary bg-[length:200%_auto] hover:bg-right transition-all duration-500 text-white font-bold text-base shadow-[0_0_20px_rgba(127,13,242,0.4)] hover:shadow-[0_0_30px_rgba(127,13,242,0.6)] flex items-center justify-center gap-2 group relative overflow-hidden" type="button">
+<span class="relative z-10">Update Password</span>
+<span class="material-symbols-outlined relative z-10 text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+<!-- Inner shine effect -->
+<div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</button>
+<!-- Forgot Password Link -->
+<div class="text-center mt-2">
+<a class="text-sm text-slate-400 hover:text-primary transition-colors" href="#">Forgot your password?</a>
+</div>
+</form>
+</main>
+<!-- Bottom aesthetic padding for phones -->
+<div class="h-8 w-full"></div>
+</body></html>

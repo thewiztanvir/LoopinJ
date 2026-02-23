@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Group Member Settings - Loopin J</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#06f9f9",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#0f2323",
+                        "neon-red": "#ff4d4d",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                    boxShadow: {
+                        'neon': '0 0 10px rgba(6, 249, 249, 0.5), 0 0 20px rgba(6, 249, 249, 0.3)',
+                        'neon-red': '0 0 10px rgba(255, 77, 77, 0.4), inset 0 0 10px rgba(255, 77, 77, 0.1)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(6, 249, 249, 0.3);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(6, 249, 249, 0.5);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex justify-center selection:bg-primary/30 selection:text-primary">
+<div class="w-full max-w-md bg-[#050505] relative flex flex-col min-h-screen overflow-hidden shadow-2xl mx-auto border-x border-white/5">
+<!-- Ambient Background Glows -->
+<div class="absolute top-[-10%] left-[-10%] w-[50%] h-[30%] bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="absolute bottom-[10%] right-[-10%] w-[60%] h-[40%] bg-[#7b2cbf]/20 rounded-full blur-[120px] pointer-events-none"></div>
+<!-- Header -->
+<header class="sticky top-0 z-50 flex items-center justify-between p-4 bg-[#050505]/60 backdrop-blur-md border-b border-white/5">
+<button class="flex items-center justify-center text-slate-100 hover:text-primary transition-colors p-2 -ml-2 rounded-full active:bg-white/5">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h1 class="text-slate-100 text-lg font-bold tracking-tight">Group Info</h1>
+<div class="w-10"></div> <!-- Spacer for alignment -->
+</header>
+<!-- Main Scrollable Content -->
+<main class="flex-1 flex flex-col p-6 gap-8 pb-32 overflow-y-auto">
+<!-- Group Identity Module -->
+<div class="flex flex-col items-center gap-5">
+<div class="relative group">
+<div class="absolute inset-0 bg-primary/40 rounded-full blur-xl opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
+<div class="relative h-32 w-32 rounded-full p-1 bg-gradient-to-tr from-primary/80 to-transparent shadow-neon">
+<img alt="Neon cyberpunk abstract pattern avatar" class="h-full w-full rounded-full object-cover border-4 border-[#050505]" data-alt="Neon cyberpunk abstract pattern avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_PGf8M5jE687H8K3rcDSPXOZ80f6Uc8_rBrBrjNk-_xSnIh8_y0OWwiJKVM6hs9PnnF-SaldTvGggHlp7RrsNGyGLjIRdo5r1iVMS1DMCuUq77im-xPooIpz4NEH3lRzsSlJykqpoKEOpR5kqF3soPiycbfJRloK2lHrDdMZ2dzQZSxNm2Tdbd5eNqdYTaX2QRDfrQBrLQD7FvCD4X0gTu6y7IjwmJHpOXx-pJg9YYA1H77R46TESNf1kGm7gW_mEE4ao_pBwIsg"/>
+</div>
+</div>
+<div class="flex flex-col items-center justify-center gap-1">
+<h2 class="text-slate-100 text-2xl font-bold tracking-tight text-center drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">Neon Runners</h2>
+<p class="text-primary text-sm font-medium tracking-wide bg-primary/10 px-3 py-1 rounded-full border border-primary/20">8 Members</p>
+</div>
+</div>
+<!-- Glassmorphic Members List -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-2">
+<h3 class="text-slate-400 text-sm font-semibold uppercase tracking-wider">Members</h3>
+<span class="text-xs text-slate-600">View Only</span>
+</div>
+<div class="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden shadow-lg">
+<!-- Member Item: Admin -->
+<div class="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors border-b border-white/5">
+<div class="relative shrink-0">
+<img alt="Portrait of a woman with blue hair styling" class="h-12 w-12 rounded-full object-cover ring-2 ring-primary/50" data-alt="Portrait of a woman with blue hair styling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-tOVMESNMacpT26w2X_1rJ64HZa_Rsm4Dy7dbVoNJ3c_7onKB6FVb9sXcbiYbGmNXoZGjGEb9qpA9YEBor89x0LAwtgd9-M_kUhtReSSkYJUjH1BCK5N-9sOKMj60UN3R82DBvQ4rjgN6ZmzDZyP_5PoWP2_9JcoWAMxdShrB-abUsT3I-8OCO1SdUBH9siunDV_u2aIfRJAdXfFlkCEG3hBO2_Sn9RpWHMJ2UBvekUqoaCFBKmVKZGpv_JO9b8xZFx4w4-t793w"/>
+<div class="absolute -bottom-1 -right-1 bg-[#050505] rounded-full p-[2px]">
+<div class="bg-primary size-3 rounded-full shadow-[0_0_8px_#06f9f9]"></div>
+</div>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex items-center gap-2">
+<p class="text-slate-100 font-medium truncate">Jinx</p>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/20 text-primary border border-primary/30">ADMIN</span>
+</div>
+<p class="text-slate-500 text-xs truncate">~chaotic_spark</p>
+</div>
+</div>
+<!-- Member Item -->
+<div class="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors border-b border-white/5">
+<div class="relative shrink-0">
+<img alt="Portrait of a woman with tough expression" class="h-12 w-12 rounded-full object-cover" data-alt="Portrait of a woman with tough expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGLDoHTHY508H2lAQ5RfbLdInQ2QRGeckrVFTs6zoxJS_9__1QO7HmJObAMz8xRJJERH8jetMQeeT8r0IJePcDtOXYZ2SDBXSZvA_UZtYLRuQptXudLSBPgMks_twMUJUlU60AUqw_EcAwpxMCV60uIrUFdeVvQi-mntFjBVVxOYd_thyPkPpB4J0Di0wnr83OOlTcjiKAlKd-fzposIR-P7do-Su2DnjNZd3A1X8Cfe5DEL1QvP_3QZMHClB3jK9unamllwZ08nA"/>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<p class="text-slate-100 font-medium truncate">Vi</p>
+<p class="text-slate-500 text-xs truncate">~enforcer_vi</p>
+</div>
+</div>
+<!-- Member Item -->
+<div class="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors border-b border-white/5">
+<div class="relative shrink-0">
+<img alt="Portrait of a young man with white hair" class="h-12 w-12 rounded-full object-cover" data-alt="Portrait of a young man with white hair" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbIXM-3nWRGvIk6jRLNyyhyoXotcyTerFCepoSPwc97V0TDmwUImZ0j-UC6DzeBwDEjNZjo5gwMrfRySSug7P8azFB-5DGGgeb7i2EBEn4XUNuYrC2e8Lf4sxXyDYcp2dp3UmitHcXQ7TdszZW_a7vnyIGPVmmvesRkkjlkaWgicv_c-izBnnyBmg9T-1ehdTyOwCtiDVtY34_BQ-UZEcF9tZvvMOjm2oNdobZaWwQZfFzOIJ1cu2PyAe0qi9-S87lqTc4FYjXnnQ"/>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<p class="text-slate-100 font-medium truncate">Ekko</p>
+<p class="text-slate-500 text-xs truncate">~timewinder</p>
+</div>
+</div>
+<!-- Member Item -->
+<div class="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors border-b border-white/5">
+<div class="relative shrink-0">
+<img alt="Portrait of a man smiling" class="h-12 w-12 rounded-full object-cover" data-alt="Portrait of a man smiling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_Etl0hRuDSbylBfKhMQX3KRnbUwbAoXv3M_GCKNSrbjoiqCpUv5_v8nFbthH5KbexTv5olRG7KqOnDdWZUwleJN0OhIElDy4_5VQweEfeMcEHHas1e5PqGXyMl544EFofRep1Xu4hEBuGDS2-tPjYw-OLvr80PAeFKnsAI3UK0GlbSO6mdRAgp5chz6ILIgdfQvMr_Atw3bL2dh3UkucvPLWTW5Hz0d7Xc-1doe15ouaYyNTjZgV3YHcv106iP7HrZDc7UcvMLsU"/>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<p class="text-slate-100 font-medium truncate">Jayce</p>
+<p class="text-slate-500 text-xs truncate">~hextech_hero</p>
+</div>
+</div>
+<!-- Member Item -->
+<div class="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors">
+<div class="relative shrink-0">
+<div class="h-12 w-12 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 font-bold border border-white/5">
+                                +4
+                            </div>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<p class="text-slate-300 font-medium truncate italic">More members...</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Media/Shared (Visual Filler for "Member View") -->
+<div class="flex flex-col gap-4 mt-2 opacity-60 pointer-events-none grayscale">
+<div class="flex items-center justify-between px-2">
+<h3 class="text-slate-400 text-sm font-semibold uppercase tracking-wider">Shared Media</h3>
+<span class="material-symbols-outlined text-slate-500 text-sm">chevron_right</span>
+</div>
+<div class="flex gap-2 overflow-hidden">
+<div class="h-20 w-20 rounded-lg bg-white/10 shrink-0"></div>
+<div class="h-20 w-20 rounded-lg bg-white/10 shrink-0"></div>
+<div class="h-20 w-20 rounded-lg bg-white/10 shrink-0"></div>
+<div class="h-20 w-20 rounded-lg bg-white/10 shrink-0"></div>
+</div>
+</div>
+</main>
+<!-- Bottom Action Area -->
+<div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#050505] via-[#050505] to-transparent z-40">
+<button class="w-full group relative flex items-center justify-center gap-2 py-3.5 rounded-full overflow-hidden transition-all duration-300">
+<!-- Button Background & Border -->
+<div class="absolute inset-0 border border-neon-red/50 rounded-full group-hover:bg-neon-red/10 group-active:bg-neon-red/20 transition-all shadow-neon-red"></div>
+<!-- Icon -->
+<span class="material-symbols-outlined text-neon-red z-10 transition-transform group-hover:-translate-x-1" style="font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;">logout</span>
+<!-- Text -->
+<span class="text-neon-red font-semibold z-10 tracking-wide">Leave Group</span>
+</button>
+<!-- Safe Area Spacer for iOS Home Indicator -->
+<div class="h-4"></div>
+</div>
+</div>
+</body></html>

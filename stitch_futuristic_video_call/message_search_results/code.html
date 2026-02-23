@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Loopin J - Message Search</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00ffff",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#050505",
+                        "surface-dark": "#0f2323",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .neon-glow {
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 20px rgba(0, 255, 255, 0.4);
+        }
+        .neon-border {
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+        .glass-panel {
+            background: rgba(15, 35, 35, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header / Search Bar Section -->
+<header class="sticky top-0 z-20 px-4 pt-6 pb-4 glass-panel border-b border-primary/10">
+<div class="flex items-center gap-4 mb-4">
+<button class="p-2 hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold tracking-tight text-slate-100 uppercase">Search Messages</h1>
+</div>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-primary">search</span>
+</div>
+<input class="block w-full pl-12 pr-12 py-3 bg-surface-dark/50 border border-primary/30 rounded-full text-slate-100 focus:ring-2 focus:ring-primary focus:border-primary placeholder-primary/40 neon-border" placeholder="Search encrypted messages..." type="text" value="neon"/>
+<div class="absolute inset-y-0 right-0 pr-4 flex items-center">
+<button class="text-primary/60 hover:text-primary">
+<span class="material-symbols-outlined">cancel</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<main class="flex-1 overflow-y-auto px-4 py-6 space-y-6">
+<div class="flex items-center justify-between">
+<h2 class="text-sm font-semibold text-primary/70 uppercase tracking-[0.2em]">Results for 'neon'</h2>
+<span class="text-xs text-primary/50 bg-primary/10 px-3 py-1 rounded-full border border-primary/20">4 matches found</span>
+</div>
+<!-- Result List -->
+<div class="space-y-3">
+<!-- Result 1 -->
+<div class="glass-panel p-4 rounded-xl flex items-start gap-4 hover:border-primary/40 transition-all cursor-pointer">
+<div class="relative shrink-0">
+<div class="size-14 rounded-full border-2 border-primary/40 p-0.5">
+<img class="size-full rounded-full object-cover" data-alt="Futuristic tech workspace profile image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_FNgVp-KkopjvZteH2uUFwgHbSCcXrrpTiVMWDMQEQ41lSe_7PoBeQXlStANXYzSA4aOZaDHJb595oaGVikOxhmbmIsaNpkhVBQsanQSqieHEh0J1Y6RgD15ToCKoeSsWJm4rPWvvsq2IEByOwJ7BNqQLseufSbY5muWk0OqdoGTcQzBHaDoys62e0RsrGzJgoSAmr6Sw9zHEPHpe7NiM0DdU5uTE9szUFG0Gfili81D8A3llITOe7qJYk59GDfmbXi4t7T7-1as"/>
+</div>
+<div class="absolute bottom-0 right-0 size-4 bg-primary rounded-full border-2 border-background-dark"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-bold text-slate-100 truncate">Neo-Tokyo Squad</h3>
+<span class="text-[10px] text-primary/40 uppercase font-medium">2m ago</span>
+</div>
+<p class="text-sm text-slate-400 leading-relaxed line-clamp-2">
+                        Akira: Did you see the new <span class="text-primary font-bold neon-glow">neon</span> signs in Sector 7? They're using the updated plasma pulse tech.
+                    </p>
+</div>
+</div>
+<!-- Result 2 -->
+<div class="glass-panel p-4 rounded-xl flex items-start gap-4 hover:border-primary/40 transition-all cursor-pointer">
+<div class="relative shrink-0">
+<div class="size-14 rounded-full border-2 border-primary/20 p-0.5">
+<img class="size-full rounded-full object-cover" data-alt="Abstract cyber pattern avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALhmSpGRLwRhncnzO38prk_cKTA9TldLTSc44wMlmSVsjTkMYmUTbw2a8Brt-QFMy06HQXo_077gDqjuhadfUfO_rpBPIYrqaO1gR_Z23IzEd8AvfJ72d5hEx86j_SnSojLvV3uIKtUBQZb31lFQ42cOvpDDXy_YBwD4Y81Td20HdelLF_7z1WdWlYEOAPFr9DtaaahrA5ksL4IsY9U_zoVaoHA8u141LHP05RmoItAoSipug2kwqI4EXaXUMO3WNnhs-Schwoup0"/>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-bold text-slate-100 truncate">Project X Mainframe</h3>
+<span class="text-[10px] text-primary/40 uppercase font-medium">1h ago</span>
+</div>
+<p class="text-sm text-slate-400 leading-relaxed line-clamp-2">
+                        System: Alert. Unauthorized access attempt detected. Override sequence <span class="text-primary font-bold neon-glow">neon</span>-delta-9 engaged.
+                    </p>
+</div>
+</div>
+<!-- Result 3 -->
+<div class="glass-panel p-4 rounded-xl flex items-start gap-4 hover:border-primary/40 transition-all cursor-pointer border-l-4 border-l-primary/60">
+<div class="relative shrink-0">
+<div class="size-14 rounded-full border-2 border-primary/40 p-0.5">
+<img class="size-full rounded-full object-cover" data-alt="Holographic sphere avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArX-VYvvHicVGOoQN82CIiBly1hjJwsc67sIxiu3-5oEMp1h6bEPqojfKB90GZt1h6gbflketlx8PcEneDZl-judoCPX3QlXbQ9SWMs1YhFnMCgDITIbXEUa8ySZEcAhbKX3Jkd10wZCLNPv_RltC5EEpyybZOS4Ijd7QereeY_0wALOr4eRnQyVIq3v5fr2YhBQMbDZQidbnCaDdJjHoV49pceTG6lARQx8mcXvnYQVBuiR-Ud4XTc3pCcOqUWtXfp9JC8Q_dubc"/>
+</div>
+<div class="absolute bottom-0 right-0 size-4 bg-primary/20 rounded-full border-2 border-background-dark"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-bold text-slate-100 truncate">Loopin J Devs</h3>
+<span class="text-[10px] text-primary/40 uppercase font-medium">4h ago</span>
+</div>
+<p class="text-sm text-slate-400 leading-relaxed line-clamp-2">
+                        Sarah: The UI refresh is looking sick. I added a subtle <span class="text-primary font-bold neon-glow">neon</span> glow to the primary buttons.
+                    </p>
+</div>
+</div>
+<!-- Result 4 -->
+<div class="glass-panel p-4 rounded-xl flex items-start gap-4 hover:border-primary/40 transition-all cursor-pointer">
+<div class="relative shrink-0">
+<div class="size-14 rounded-full border-2 border-primary/20 p-0.5">
+<img class="size-full rounded-full object-cover" data-alt="Cyberpunk city lights avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgx0IUKsl6aJBmmIcmem7mTPlGhSnKqPd3QaWwoH1PM7VJEqA0qFH5-gxNmrgkIub3QhFx-kQTbGvwQIDIh9-qeW-TzzV0um19ICDyL5lsae_etVTrd3bgBhK0HhP9Z5Z5C6Mz5ZIfrqAa2ragCnHhto6h0X6yzR2riGvN0s3Bi1C10Wys_l1hG-kMwna9Oc8Ss3TeMadTlUwygUTZhoG3Q_dsV9N9cUwQ4i5b356kR3WJ77NIJ8bZbuVtPJMenf5jGi5QG91Lxeo"/>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-bold text-slate-100 truncate">Cyber Market</h3>
+<span class="text-[10px] text-primary/40 uppercase font-medium">Yesterday</span>
+</div>
+<p class="text-sm text-slate-400 leading-relaxed line-clamp-2">
+                        Vendor: Selling limited edition <span class="text-primary font-bold neon-glow">neon</span>-blue skins for your neural interface. 200 creds each.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Suggestions / Explore -->
+<div class="pt-4">
+<h3 class="text-xs font-semibold text-primary/40 uppercase tracking-widest mb-4">Related Tags</h3>
+<div class="flex flex-wrap gap-2">
+<span class="px-4 py-1.5 bg-primary/10 border border-primary/20 rounded-full text-xs text-primary font-medium">#neon-blue</span>
+<span class="px-4 py-1.5 bg-primary/10 border border-primary/20 rounded-full text-xs text-primary font-medium">#cyber-punk</span>
+<span class="px-4 py-1.5 bg-primary/10 border border-primary/20 rounded-full text-xs text-primary font-medium">#grid-runner</span>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="sticky bottom-0 w-full border-t border-primary/10 glass-panel px-4 pb-4 pt-3 flex justify-between items-center">
+<a class="flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-primary/50 group-hover:text-primary transition-colors">chat_bubble</span>
+<span class="text-[10px] font-medium text-primary/50 uppercase tracking-wider">Chats</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<div class="bg-primary/20 p-2 rounded-xl border border-primary/40 -mt-6 shadow-[0_0_15px_rgba(0,255,255,0.3)]">
+<span class="material-symbols-outlined text-primary">search</span>
+</div>
+<span class="text-[10px] font-bold text-primary uppercase tracking-wider">Search</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-primary/50 group-hover:text-primary transition-colors">group</span>
+<span class="text-[10px] font-medium text-primary/50 uppercase tracking-wider">Contacts</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-primary/50 group-hover:text-primary transition-colors">settings</span>
+<span class="text-[10px] font-medium text-primary/50 uppercase tracking-wider">Settings</span>
+</a>
+</nav>
+</body></html>

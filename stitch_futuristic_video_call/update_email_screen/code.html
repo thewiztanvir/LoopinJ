@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Loopin J - Update Email</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d93f2",
+                        "primary-glow": "#0d93f2",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#050505", // Deep charcoal/black per spec
+                        "neon-purple": "#6a0df2",
+                        "glass-surface": "rgba(255, 255, 255, 0.05)",
+                        "glass-border": "rgba(255, 255, 255, 0.1)",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    },
+                    boxShadow: {
+                        'neon': '0 0 10px theme("colors.primary"), 0 0 20px theme("colors.primary-glow")',
+                        'neon-sm': '0 0 5px theme("colors.primary")',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+        
+        /* Glassmorphism utilities */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .glass-input {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .glass-input:focus-within {
+            border-color: #0d93f2;
+            box-shadow: 0 0 15px rgba(13, 147, 242, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Ambient light leaks */
+        .ambient-light {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased min-h-screen relative overflow-hidden selection:bg-primary selection:text-white">
+<!-- Ambient Light Effects -->
+<div class="ambient-light bg-neon-purple top-[-100px] left-[-100px]"></div>
+<div class="ambient-light bg-primary bottom-[-50px] right-[-50px] opacity-20"></div>
+<!-- Main Container -->
+<div class="relative flex flex-col h-full min-h-screen w-full max-w-md mx-auto z-10">
+<!-- Header -->
+<header class="flex items-center justify-between p-6 pb-2 pt-8">
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-white/5 active:scale-95 transition-all text-slate-100">
+<span class="material-symbols-outlined !text-[28px]">chevron_left</span>
+</button>
+<h1 class="text-xl font-bold tracking-tight text-white flex-1 text-center pr-10">Update Email</h1>
+</header>
+<!-- Content Area -->
+<main class="flex-1 flex flex-col px-6 py-8">
+<!-- Description -->
+<div class="mb-8 text-center space-y-2">
+<div class="size-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4 border border-primary/20 shadow-neon-sm">
+<span class="material-symbols-outlined text-primary !text-[32px]">mail</span>
+</div>
+<p class="text-slate-400 text-sm leading-relaxed max-w-[280px] mx-auto">
+                    Please enter your new email address and confirm your password to save changes.
+                </p>
+</div>
+<!-- Glass Form Container -->
+<div class="glass rounded-3xl p-6 space-y-6 shadow-2xl">
+<!-- Email Input Group -->
+<div class="space-y-2">
+<label class="text-xs font-medium text-slate-300 ml-4 uppercase tracking-wider opacity-80">New Email Address</label>
+<div class="glass-input flex items-center rounded-full h-14 px-5 w-full group">
+<span class="material-symbols-outlined text-slate-500 group-focus-within:text-primary transition-colors">alternate_email</span>
+<input class="bg-transparent border-none w-full h-full text-white placeholder-slate-500 focus:ring-0 ml-2 text-base" placeholder="name@example.com" type="email" value="jason.k@loopin.com"/>
+</div>
+</div>
+<!-- Password Input Group -->
+<div class="space-y-2">
+<label class="text-xs font-medium text-slate-300 ml-4 uppercase tracking-wider opacity-80">Current Password</label>
+<div class="glass-input flex items-center rounded-full h-14 px-5 w-full group relative">
+<span class="material-symbols-outlined text-slate-500 group-focus-within:text-primary transition-colors">lock</span>
+<input class="bg-transparent border-none w-full h-full text-white placeholder-slate-500 focus:ring-0 ml-2 text-base pr-10" placeholder="••••••••••••" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined !text-[20px]">visibility_off</span>
+</button>
+</div>
+</div>
+<!-- Helper / Error Message (Hidden by default, shown for demo) -->
+<!-- Example of success state -->
+<!-- <div class="flex items-center gap-2 px-2 py-1">
+                     <span class="material-symbols-outlined text-green-400 !text-sm">check_circle</span>
+                     <span class="text-green-400 text-xs font-medium">Email available</span>
+                </div> -->
+</div>
+<!-- Actions -->
+<div class="mt-8 space-y-6">
+<button class="relative w-full h-14 bg-primary text-white font-bold rounded-full text-lg tracking-wide shadow-neon hover:shadow-[0_0_25px_theme('colors.primary')] active:scale-[0.98] transition-all duration-300 overflow-hidden group">
+<span class="relative z-10 flex items-center justify-center gap-2">
+                        Update Email
+                        <span class="material-symbols-outlined !text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</span>
+<!-- Button inner glow effect -->
+<div class="absolute inset-0 bg-white/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+</button>
+<div class="text-center">
+<a class="text-sm text-slate-500 hover:text-primary transition-colors hover:underline decoration-primary/50 underline-offset-4" href="#">Forgot Password?</a>
+</div>
+</div>
+</main>
+<!-- Bottom Safe Area Spacer -->
+<div class="h-6 w-full"></div>
+</div>
+</body></html>

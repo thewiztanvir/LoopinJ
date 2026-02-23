@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Loopin J - Neon Chat</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00ffff", // Neon Cyan
+                        "primary-dim": "rgba(0, 255, 255, 0.1)",
+                        "secondary-pink": "#ff00ff", // Neon Pink
+                        "accent-purple": "#a855f7",
+                        "accent-blue": "#3b82f6",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#050a0a", // Deep dark background
+                        "glass-surface": "rgba(20, 30, 30, 0.6)",
+                        "glass-border": "rgba(255, 255, 255, 0.08)",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "1.5rem", "xl": "2rem", "2xl": "3rem", "full": "9999px"},
+                    boxShadow: {
+                        "neon-primary": "0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3)",
+                        "neon-pink": "0 0 8px rgba(255, 0, 255, 0.6), 0 0 16px rgba(255, 0, 255, 0.3)",
+                        "neon-green": "0 0 8px rgba(34, 197, 94, 0.6), 0 0 12px rgba(34, 197, 94, 0.3)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .glass {
+            background: rgba(16, 28, 28, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glass-nav {
+            background: rgba(10, 20, 20, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(0, 255, 255, 0.15);
+        }@keyframes pulse-pink {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 255, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(255, 0, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 255, 0); }
+        }
+        .animate-pulse-pink {
+            animation: pulse-pink 2s infinite;
+        }@keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-4px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark font-display text-white overflow-hidden antialiased selection:bg-primary selection:text-black">
+<div class="relative mx-auto flex h-screen w-full max-w-md flex-col overflow-hidden bg-background-dark shadow-2xl md:rounded-3xl md:border md:border-glass-border">
+<header class="z-10 flex flex-col gap-4 px-5 pt-8 pb-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-primary/30 bg-primary/10 shadow-neon-primary">
+<img alt="User profile avatar close up" class="h-full w-full object-cover" data-alt="User profile avatar close up" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD30KSea_mg2jY7dmqAf7flF1v4BbFHt2eWWSVOEjCNoD2tc7b64ud2J6t3cJ8ijOjkS46MnQHkcX7TLhfOeauPBK0xKd1lBg6n5YPXO9haVXjvDZPLh_dKlh0UcOe3drpQ5mLNK1r5JSNJB9uUCeOuuVQDbisxq1H0jFJALCCyWpVB0wxuJeqbfpafyYU3VcPRQjL7ixJhDLDzzj1WqPburm1ZirgirZok03io9TetPyV_dw0MgCZzfci4maR3WQkUjcRoPQj4NU4"/>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">
+                            Loopin J
+                        </h1>
+<p class="text-xs text-primary/80 font-medium tracking-wider uppercase">Online</p>
+</div>
+</div>
+<button class="group flex h-10 w-10 items-center justify-center rounded-full bg-glass-surface transition-all hover:bg-primary/20 hover:text-primary">
+<span class="material-symbols-outlined text-white/80 transition-colors group-hover:text-primary">settings</span>
+</button>
+</div>
+<div class="relative w-full">
+<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+<span class="material-symbols-outlined text-primary drop-shadow-[0_0_5px_rgba(0,255,255,0.8)]">search</span>
+</div>
+<input class="block w-full rounded-2xl border-0 bg-glass-surface py-3.5 pl-12 pr-4 text-sm text-white placeholder-white/40 shadow-sm backdrop-blur-md ring-1 ring-inset ring-white/10 transition-all focus:ring-2 focus:ring-primary focus:bg-primary/5 focus:outline-none" placeholder="Search chats, people..." type="text"/>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto px-4 pb-24 pt-2">
+<div class="mb-6">
+<h2 class="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-white/50">Active Now</h2>
+<div class="-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 hide-scrollbar">
+<div class="flex flex-col items-center gap-1.5 shrink-0">
+<div class="relative">
+<div class="h-14 w-14 rounded-full p-[2px] bg-gradient-to-tr from-primary to-accent-purple shadow-neon-primary">
+<div class="h-full w-full rounded-full bg-background-dark p-[2px]">
+<img alt="Active User" class="h-full w-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkYL8frEMRQDEofU6Sz0lvnevhM1k4V_vLLcmRirxGmhSCba_lerOvv2bndDPp6PlrAw8cGuaBgme4GGBr6d2iB_jx8iSTWlpSVDNDLAr7UnoWsxBM5xlq9IbXydZU_RHlDuKwbJ-j4iEhUUMK_xkSfhoSoj_zKO3tdZfuLtHUGj1cNUqBR117jKnzlWzF09jRtkW6FL3yvBSkFC_pRopwr-D8YNg4cXAS3kmzO-KEqpspWjADC-mNcKxx02ykM-yJO98eAdGd6h8"/>
+</div>
+</div>
+<div class="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-background-dark bg-green-500 shadow-neon-green"></div>
+</div>
+<span class="text-xs font-medium text-white/80">Cyber</span>
+</div>
+<div class="flex flex-col items-center gap-1.5 shrink-0">
+<div class="relative">
+<div class="h-14 w-14 rounded-full p-[2px] bg-white/10 hover:bg-white/20 transition-colors">
+<div class="h-full w-full rounded-full bg-background-dark p-[2px]">
+<img alt="Active User" class="h-full w-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7wMVjTOMGt3Q2vkLj9HWi1ZUs6pJT8YrpuPLoIrvU2yNp2_LHnX7aAFXsqFsWUCzo5KXSSxE_hKMc8tkOP32SA1yu5ZpxwEqYZ_rDxlYOaY-A3xzrCHjymypLjNQpbxldGrtXpdow5xBVUIWwuMyamnbT9PiHrFkXQce37gPlEvILHX-o-1pfae9UQ5CpfTHf_kvRRr2uMyfp0WYy5umFrTEcH8fqbm2FS05VK0FxM2asmfKtU-gFccaFrRtlsLD5e793yU3riBg"/>
+</div>
+</div>
+<div class="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-background-dark bg-green-500 shadow-neon-green"></div>
+</div>
+<span class="text-xs font-medium text-white/80">Nova</span>
+</div>
+<div class="flex flex-col items-center gap-1.5 shrink-0">
+<div class="relative">
+<div class="h-14 w-14 rounded-full p-[2px] bg-gradient-to-tr from-accent-purple to-secondary-pink shadow-neon-pink">
+<div class="h-full w-full rounded-full bg-background-dark p-[2px]">
+<img alt="Active User" class="h-full w-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmUJhvR91UKpCE6CQ4ULSju6ojv5_ry9n9jxAWMHGEXrmHsjf9gsL_s9wvlrZBrvdjRkbpjLPCtdhG0ej0JCCSckD_JMVGY6rYo2KbWZEFqoZxKBPjtQsPqbndvD6GzxcZN9gvkmKMjmRZxGXEolselAxQPyJYy_t1bvAMKk1PnOeBr0iTo6M74mZKSEuMFA1qWKhsaujHCAiav2dG4qeFsO4RhpcJwjmgjJ0HBpt-KhYP5pvbTaQvuBP4zGqZxcQKIjn6Dnuctpg"/>
+</div>
+</div>
+<div class="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-background-dark bg-green-500 shadow-neon-green"></div>
+</div>
+<span class="text-xs font-medium text-white/80">Jinx</span>
+</div>
+<div class="flex flex-col items-center gap-1.5 shrink-0">
+<div class="relative">
+<div class="h-14 w-14 rounded-full p-[2px] bg-white/10">
+<div class="h-full w-full rounded-full bg-background-dark p-[2px]">
+<img alt="Active User" class="h-full w-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQ3LwLJw5SlA3X-9KHgU6yvAoN_rcYAqr4MJWIEoNKW00RUZBUD2BHAGX4KQ-sF-DszzwZ2Tq8tu3CkulIQ2pU2pEIutY7LhqQZ-KF3Ff89iAitZc-vkmgx90k72ar-VPCWRwQenZU9fuIvJknFDaP6SqbbjriFzelP6me-Vp9tH8-N3ld2srOINExsMkd4YFXk3m6XaO0qEdJayjlpnREutsyELplYbV37phtg-C6PcxDLFAF2CfRO5dYcaRdIE5bzOlLCrxgsSI"/>
+</div>
+</div>
+<div class="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-background-dark bg-green-500 shadow-neon-green"></div>
+</div>
+<span class="text-xs font-medium text-white/80">K-9</span>
+</div>
+<div class="flex flex-col items-center gap-1.5 shrink-0">
+<div class="relative">
+<div class="h-14 w-14 rounded-full p-[2px] bg-white/10">
+<div class="h-full w-full rounded-full bg-background-dark p-[2px]">
+<img alt="Active User" class="h-full w-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGewb8oXQYZ8rmsZupA2Z0c02wRFO7ow8VoIS164TCldlGW-r-CcQRA4vCFccm5ZcZYwIqrQ0c8SbmkR78chN3FqbEbji_nYxsxYB0KWA3r1S48tdvAwg9XvEFTaRZnkcpRdisQlbFFutw567PLGfjwPo-wXSy8O30Cp3cylMA2G3bf6DmjMQxVbxPCP-NyHOyuE0XWhS9nizCESuejQuH8EbAJ2Abkefy1IxlyhYppCP8pB0VP3Bfo7F4aWoJiv-7czW0L7xU9_w"/>
+</div>
+</div>
+<div class="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-background-dark bg-green-500 shadow-neon-green"></div>
+</div>
+<span class="text-xs font-medium text-white/80">Trinity</span>
+</div>
+<div class="flex flex-col items-center gap-1.5 shrink-0">
+<div class="relative">
+<div class="h-14 w-14 rounded-full p-[2px] bg-white/10">
+<div class="h-full w-full rounded-full bg-background-dark p-[2px]">
+<img alt="Active User" class="h-full w-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD30KSea_mg2jY7dmqAf7flF1v4BbFHt2eWWSVOEjCNoD2tc7b64ud2J6t3cJ8ijOjkS46MnQHkcX7TLhfOeauPBK0xKd1lBg6n5YPXO9haVXjvDZPLh_dKlh0UcOe3drpQ5mLNK1r5JSNJB9uUCeOuuVQDbisxq1H0jFJALCCyWpVB0wxuJeqbfpafyYU3VcPRQjL7ixJhDLDzzj1WqPburm1ZirgirZok03io9TetPyV_dw0MgCZzfci4maR3WQkUjcRoPQj4NU4"/>
+</div>
+</div>
+<div class="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-background-dark bg-green-500 shadow-neon-green"></div>
+</div>
+<span class="text-xs font-medium text-white/80">Me</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="group glass relative flex items-center gap-4 rounded-2xl p-4 transition-all hover:bg-white/5 active:scale-[0.98]">
+<div class="relative">
+<img alt="Cyber Sam" class="h-14 w-14 rounded-full object-cover ring-2 ring-primary/50 shadow-neon-primary" data-alt="Man with sunglasses portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkYL8frEMRQDEofU6Sz0lvnevhM1k4V_vLLcmRirxGmhSCba_lerOvv2bndDPp6PlrAw8cGuaBgme4GGBr6d2iB_jx8iSTWlpSVDNDLAr7UnoWsxBM5xlq9IbXydZU_RHlDuKwbJ-j4iEhUUMK_xkSfhoSoj_zKO3tdZfuLtHUGj1cNUqBR117jKnzlWzF09jRtkW6FL3yvBSkFC_pRopwr-D8YNg4cXAS3kmzO-KEqpspWjADC-mNcKxx02ykM-yJO98eAdGd6h8"/>
+<div class="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-background-dark bg-green-500 shadow-neon-green"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-0.5">
+<h3 class="text-base font-bold text-white group-hover:text-primary transition-colors">Cyber Sam</h3>
+<span class="text-xs font-medium text-primary">12:05 PM</span>
+</div>
+<p class="truncate text-sm text-white/70 font-light group-hover:text-white/90">Are we meeting at the hub tonight?</p>
+</div>
+<div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-secondary-pink animate-pulse-pink">
+<span class="text-[10px] font-bold text-white">2</span>
+</div>
+</div>
+<div class="group glass relative flex items-center gap-4 rounded-2xl p-4 transition-all hover:bg-white/5 active:scale-[0.98]">
+<div class="relative">
+<img alt="Nova" class="h-14 w-14 rounded-full object-cover ring-1 ring-white/20" data-alt="Woman smiling portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7wMVjTOMGt3Q2vkLj9HWi1ZUs6pJT8YrpuPLoIrvU2yNp2_LHnX7aAFXsqFsWUCzo5KXSSxE_hKMc8tkOP32SA1yu5ZpxwEqYZ_rDxlYOaY-A3xzrCHjymypLjNQpbxldGrtXpdow5xBVUIWwuMyamnbT9PiHrFkXQce37gPlEvILHX-o-1pfae9UQ5CpfTHf_kvRRr2uMyfp0WYy5umFrTEcH8fqbm2FS05VK0FxM2asmfKtU-gFccaFrRtlsLD5e793yU3riBg"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-0.5">
+<h3 class="text-base font-bold text-white group-hover:text-primary transition-colors">Nova</h3>
+<span class="text-xs font-medium text-white/40">Yesterday</span>
+</div>
+<div class="flex items-center gap-1 text-white/50 group-hover:text-white/80">
+<span class="material-symbols-outlined text-[16px]">image</span>
+<p class="truncate text-sm font-light">Sent an image</p>
+</div>
+</div>
+</div>
+<div class="group glass relative flex items-center gap-4 rounded-2xl p-4 transition-all hover:bg-white/5 active:scale-[0.98]">
+<div class="relative">
+<img alt="Jinx" class="h-14 w-14 rounded-full object-cover ring-2 ring-primary/50 shadow-neon-primary" data-alt="Man looking at camera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmUJhvR91UKpCE6CQ4ULSju6ojv5_ry9n9jxAWMHGEXrmHsjf9gsL_s9wvlrZBrvdjRkbpjLPCtdhG0ej0JCCSckD_JMVGY6rYo2KbWZEFqoZxKBPjtQsPqbndvD6GzxcZN9gvkmKMjmRZxGXEolselAxQPyJYy_t1bvAMKk1PnOeBr0iTo6M74mZKSEuMFA1qWKhsaujHCAiav2dG4qeFsO4RhpcJwjmgjJ0HBpt-KhYP5pvbTaQvuBP4zGqZxcQKIjn6Dnuctpg"/>
+<div class="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-background-dark bg-green-500 shadow-neon-green"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-0.5">
+<h3 class="text-base font-bold text-white group-hover:text-primary transition-colors">Jinx</h3>
+<span class="text-xs font-medium text-primary">10:42 AM</span>
+</div>
+<p class="truncate text-sm text-white/90 font-medium group-hover:text-white">Can you send the encryption keys?</p>
+</div>
+<div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-secondary-pink shadow-neon-pink">
+<span class="text-[10px] font-bold text-white">5</span>
+</div>
+</div>
+<div class="group glass relative flex items-center gap-4 rounded-2xl p-4 transition-all hover:bg-white/5 active:scale-[0.98]">
+<div class="relative">
+<img alt="K-9" class="h-14 w-14 rounded-full object-cover grayscale opacity-80 ring-1 ring-white/10" data-alt="Bearded man portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQ3LwLJw5SlA3X-9KHgU6yvAoN_rcYAqr4MJWIEoNKW00RUZBUD2BHAGX4KQ-sF-DszzwZ2Tq8tu3CkulIQ2pU2pEIutY7LhqQZ-KF3Ff89iAitZc-vkmgx90k72ar-VPCWRwQenZU9fuIvJknFDaP6SqbbjriFzelP6me-Vp9tH8-N3ld2srOINExsMkd4YFXk3m6XaO0qEdJayjlpnREutsyELplYbV37phtg-C6PcxDLFAF2CfRO5dYcaRdIE5bzOlLCrxgsSI"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-0.5">
+<h3 class="text-base font-bold text-white/80 group-hover:text-primary transition-colors">K-9</h3>
+<span class="text-xs font-medium text-white/40">Mon</span>
+</div>
+<p class="truncate text-sm text-white/50 font-light">Server maintenance scheduled for...</p>
+</div>
+</div>
+<div class="group glass relative flex items-center gap-4 rounded-2xl p-4 transition-all hover:bg-white/5 active:scale-[0.98]">
+<div class="relative">
+<img alt="Trinity" class="h-14 w-14 rounded-full object-cover ring-2 ring-primary/50 shadow-neon-primary" data-alt="Woman portrait looking sideways" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGewb8oXQYZ8rmsZupA2Z0c02wRFO7ow8VoIS164TCldlGW-r-CcQRA4vCFccm5ZcZYwIqrQ0c8SbmkR78chN3FqbEbji_nYxsxYB0KWA3r1S48tdvAwg9XvEFTaRZnkcpRdisQlbFFutw567PLGfjwPo-wXSy8O30Cp3cylMA2G3bf6DmjMQxVbxPCP-NyHOyuE0XWhS9nizCESuejQuH8EbAJ2Abkefy1IxlyhYppCP8pB0VP3Bfo7F4aWoJiv-7czW0L7xU9_w"/>
+<div class="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-background-dark bg-yellow-500"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-0.5">
+<h3 class="text-base font-bold text-white group-hover:text-primary transition-colors">Trinity</h3>
+<span class="text-xs font-medium text-white/40">Sun</span>
+</div>
+<p class="truncate text-sm text-white/60 font-light">Follow the white rabbit 🐇</p>
+</div>
+</div>
+</div>
+</div>
+<button class="animate-float absolute bottom-24 right-5 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-accent-purple to-accent-blue shadow-lg shadow-accent-purple/40 ring-1 ring-white/20 transition-transform active:scale-90 hover:scale-105">
+<span class="material-symbols-outlined text-white text-3xl">add</span>
+</button>
+<nav class="absolute bottom-0 w-full glass-nav pb-5 pt-3 z-30">
+<div class="flex items-center justify-around px-2">
+<a class="flex flex-col items-center gap-1 group" href="#">
+<div class="flex h-8 w-12 items-center justify-center rounded-2xl bg-primary/10 transition-all group-hover:bg-primary/20">
+<span class="material-symbols-outlined text-primary drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]">chat_bubble</span>
+</div>
+<span class="text-[10px] font-medium text-primary drop-shadow-[0_0_5px_rgba(0,255,255,0.5)]">Chats</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<div class="flex h-8 w-12 items-center justify-center rounded-2xl transition-all group-hover:bg-white/5">
+<span class="material-symbols-outlined text-white/50 group-hover:text-white transition-colors">call</span>
+</div>
+<span class="text-[10px] font-medium text-white/50 group-hover:text-white transition-colors">Calls</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<div class="flex h-8 w-12 items-center justify-center rounded-2xl transition-all group-hover:bg-white/5">
+<span class="material-symbols-outlined text-white/50 group-hover:text-white transition-colors">photo_camera</span>
+</div>
+<span class="text-[10px] font-medium text-white/50 group-hover:text-white transition-colors">Camera</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<div class="flex h-8 w-12 items-center justify-center rounded-2xl transition-all group-hover:bg-white/5">
+<span class="material-symbols-outlined text-white/50 group-hover:text-white transition-colors">person</span>
+</div>
+<span class="text-[10px] font-medium text-white/50 group-hover:text-white transition-colors">Profile</span>
+</a>
+</div>
+</nav>
+<div class="pointer-events-none absolute -top-20 -left-20 h-64 w-64 rounded-full bg-primary/10 blur-[80px]"></div>
+<div class="pointer-events-none absolute top-1/2 -right-20 h-80 w-80 rounded-full bg-accent-purple/10 blur-[100px]"></div>
+<div class="pointer-events-none absolute -bottom-20 left-1/4 h-64 w-64 rounded-full bg-secondary-pink/10 blur-[80px]"></div>
+</div>
+</body></html>

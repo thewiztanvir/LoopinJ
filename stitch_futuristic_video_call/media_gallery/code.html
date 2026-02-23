@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Loopin J - Media Gallery</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00ffff",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#050505",
+                        "surface-dark": "#0f2323",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-header {
+            background: rgba(15, 35, 35, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+        .neon-shadow {
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+        .neon-border {
+            border: 1px solid rgba(0, 255, 255, 0.4);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased min-h-screen flex flex-col">
+<!-- Glassmorphic Header -->
+<header class="sticky top-0 z-50 glass-header px-4 py-4 flex items-center justify-between">
+<button class="flex items-center justify-center size-10 rounded-full bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold tracking-tight text-slate-100">Media Gallery</h1>
+<button class="flex items-center justify-center size-10 rounded-full bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined">search</span>
+</button>
+</header>
+<!-- Category Filter (Segmented Control) -->
+<div class="px-4 py-6">
+<div class="flex h-12 w-full items-center justify-center rounded-full bg-surface-dark border border-primary/10 p-1.5 gap-1">
+<button class="flex flex-1 items-center justify-center rounded-full bg-primary text-background-dark text-sm font-bold h-full transition-all neon-shadow">
+                Photos
+            </button>
+<button class="flex flex-1 items-center justify-center rounded-full text-slate-400 text-sm font-medium h-full hover:text-primary transition-all">
+                Videos
+            </button>
+<button class="flex flex-1 items-center justify-center rounded-full text-slate-400 text-sm font-medium h-full hover:text-primary transition-all">
+                Links
+            </button>
+</div>
+</div>
+<!-- Media Grid -->
+<main class="flex-1 overflow-y-auto px-4 pb-24">
+<div class="grid grid-cols-3 gap-2">
+<!-- Photo Item -->
+<div class="relative group cursor-pointer aspect-square rounded overflow-hidden neon-border">
+<img alt="Neon futuristic cityscape background" class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-110 transition-transform duration-500" data-alt="Neon futuristic cityscape at night" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxI5NLXy06RP0LSxK6Os6cyHDy8kDWWeBX8T_uGgmisijgISrDbRBqbOKZkyT0IKRJJ3KK6IFKEHpBNsHjhHIK5mFl5b2qLbg8r4hCfFTAIr19vLCsvjtii4LWm2sv_eA4WpEe5oczQciLnjkcVZ6sO9klEPp5ZwvyDvNahp_VJjcCHM2JnVdepTwg7J7EXhUgdzc8kkUce-PyYSRT8RbSdCLtDfRSc60CfXxJ8tie8YCbmbgo8TINGSNdTQSOW7HD4n72SChvOgY"/>
+</div>
+<!-- Video Item -->
+<div class="relative group cursor-pointer aspect-square rounded overflow-hidden neon-border">
+<img alt="Retro tech hardware close up" class="w-full h-full object-cover opacity-80" data-alt="Retro computer components with cyan lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8thuoRSW4caM4zIFPqTnfeSNE0DW_KEoiOOubw5bDHsqQycQD-HoCA9ufUjhXGvOJR0CDTNesVTZDRntDbwUNxqshPuE_mtnWBHyK9P2dafflpqz92DaHVa0te3wUZSevle_EDMNZo26dFJKNlMQHyFUUiO5whd1Yz0Rs-ghar_6SbTWzvyw1SKopS0hvham6LMJMr1JeSAlPAx2IYCNdCRiN9uERS1MvZgejsdg1q357NBukIQRCuKU_OHAfezoxWRPuyEBrYZ8"/>
+<div class="absolute inset-0 flex items-center justify-center bg-black/20">
+<span class="material-symbols-outlined text-primary text-3xl drop-shadow-md">play_circle</span>
+</div>
+<div class="absolute bottom-1 right-1 bg-background-dark/80 px-1.5 py-0.5 rounded text-[10px] text-primary border border-primary/20">
+                    0:45
+                </div>
+</div>
+<!-- Photo Item -->
+<div class="relative group cursor-pointer aspect-square rounded overflow-hidden neon-border">
+<img alt="Digital earth network visualization" class="w-full h-full object-cover" data-alt="Global digital network abstract graphic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpvQMjZT3TapaVaVe9exvhWTlBGuF4itZUymEBpm7SEil38XRGPdD81E7XJJZaFCeY4sGOiwUhgAxLXtNoFH8unQk7-PxSCfsiDrWD-EJ4354M-soCHJTSIRhOEub2kLcfqpQufQkChNBJkJaNfWO9mgQoIxW6pKKFbWSupte5-VJl_V-EXbdiXn02CaWYUEG06OA9hM103hSVok_C7oZ1ztZaEsUFMQnlWiHzlEbim6dYbTYeK7CnTHfuypIXCok8CRxG_lXm5MA"/>
+</div>
+<!-- Photo Item -->
+<div class="relative group cursor-pointer aspect-square rounded overflow-hidden neon-border">
+<img alt="Abstract light particles" class="w-full h-full object-cover" data-alt="Abstract cyan particle motion background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgbra-cnuDBh8g1u8zFWFn9zxGmLMcRfVPKcs2bAuJx-z7p3oc4bG7VapHcBmE_uZNI-S-ArS7DEeyVMUGPaQTBsJw7iqvGUExUsEvFzm2NnATBIPZaWaAcC14Xruvsg4fzvxUrmVlZYRmCtyaqjG4bZyPGSmmGjg3zSgzSrXXjf_Oy-mEkH5KWamGoixA1rl8L1lz9IklWlIN2ciurWO4dcFtUkEEjZnvP4M5S61SNY4W-O1-qQD_tNChGfig-b1WDBSr9Eh1HEc"/>
+</div>
+<!-- Photo Item (Active/Selected Simulation) -->
+<div class="relative group cursor-pointer aspect-square rounded overflow-hidden border-2 border-primary ring-2 ring-primary/30">
+<img alt="Minimalist geometric architecture" class="w-full h-full object-cover" data-alt="Minimalist white and cyan architecture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0UufD4cxAOXTYRX2LNt_ds0UJtJ_t_e8cC3moQ9IxYqwac3pKeD3ZpSOTMrM-8xgZNrub9vgXpC9fUFM-4OLWailDyTrH8jjX-m908ZkHY2z5mH7QD1MbR-8AlzCzJearx0EMqfE-Rdt7HznGFGZaZo7n58cUtmNxKvXuI-NhRR1tYSnLuMLvOC04t5jBdWabQc0v_ngjhLu-PgUVveWPIerD6twbfk8NQYVlzWUDBLmt7ZOVv8CVcsY9L9fHYkO-FVe8gzpovOY"/>
+<div class="absolute top-1 right-1">
+<span class="material-symbols-outlined text-primary bg-background-dark rounded-full text-lg">check_circle</span>
+</div>
+</div>
+<!-- Video Item -->
+<div class="relative group cursor-pointer aspect-square rounded overflow-hidden neon-border">
+<img alt="Circuit board close up" class="w-full h-full object-cover opacity-80" data-alt="Blue glowing circuit board macro" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiNwlDugnnsissZssWZxItHQdj2WVA12rLUyV_ovClnJpukPSAGoye3tecBne88HGAnv9faVdoJBJ40VhOj7SWrgUGL1xNwU_MIf3uq4Eh8AW2vtplxhOPbXoVrQdge6wpzoE45dMscg_GW_eMm_fy-B6Gh8d-U4e4f1IosiSczfD3X4UHtMyDc0w77uwbjBvliZvDWDmPXxOTDbgNNXcDCUPfh7LPmmTPza9mRJM0NzKZN4vDmeyQ8gu9BYjE0ku-k-NdFgYIUNk"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">play_circle</span>
+</div>
+<div class="absolute bottom-1 right-1 bg-background-dark/80 px-1.5 py-0.5 rounded text-[10px] text-primary">
+                    1:20
+                </div>
+</div>
+<!-- Photo Item -->
+<div class="relative group cursor-pointer aspect-square rounded overflow-hidden neon-border">
+<img alt="Starry night sky abstract" class="w-full h-full object-cover" data-alt="Abstract cosmic space background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaG-h3KvNZmxBLTaHFLkO6GC6JvdNhbxcfyg9CPbZXyifuMXXM2cnNi_mGFT_CqNgZLJPp7awa_gqalYVux0FrMM4XwhcFZksN5rgZa42n2y-MFRmLCYHsw1iYUm0nNfrWadqSnRpLjz5F6cWhKQySPPQ4mIPgTplSOhtQvRhzgDrULy_l4vA3R5d27xlnwEpsVceXWwlhFlQtDsvKptc4rCx2ipNHmZzErn4s-nlEXZJKVB1trIHsneCAuQORWcnSgBmGi5Hfocg"/>
+</div>
+<!-- Photo Item -->
+<div class="relative group cursor-pointer aspect-square rounded overflow-hidden neon-border">
+<img alt="High tech laptop keyboard" class="w-full h-full object-cover" data-alt="Modern high-tech laptop hardware detail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4jfqACYekb3IggiEcqUuMsCX7T98W_iqTbRaUtHzFqECm1zNX5GYUjrFb9AY5O3TX3zmYwRldwEkU6-dLBC95Kzgf21jsMXWfgVYJDlmJYNJOdNh0Vam-g83tqcwyCcQpxxVyUd4A4kCL3dUGf7PKL4uvsHu4DsTyJomXXg0a-GbBe9FfLGjdDkgfV66GyuQN02Rejj4k_7fXzWRlV4ruvkk-SZgRbjoWM7N25ISf916azSzUcDyt2Tl-OgBQRR7_9CUAKaby2-s"/>
+</div>
+<!-- Photo Item -->
+<div class="relative group cursor-pointer aspect-square rounded overflow-hidden neon-border">
+<img alt="Humanoid robot hand" class="w-full h-full object-cover" data-alt="Robot hand interacting with screen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-UKiYDviVLOKCH2GQaPiQUwzLrLbSVhfwLmVKaln_ivMEAr1nzu26tTIX-laSbI80EID0BhplPN91CrGyD3olDKTXJbWrDq3Nz0hXQMgEGc1J1spwJwmNyfZGi7IN4gw-7juPVbj0AYGWSmQdL1_3hVy52gh-1zVThO0_Ph56XXehIBvCRoVxeYOQ4AFThjlqJpUreVAJ8-Vf-GKVfxu_C3CHEWxFnPczZEUDhXQWc9-fK2P70slvoQp45RJ6KOl8x1zSjumwyIs"/>
+</div>
+<!-- Photo Item -->
+<div class="relative group cursor-pointer aspect-square rounded overflow-hidden neon-border">
+<img alt="Cyberpunk street neon" class="w-full h-full object-cover" data-alt="Cyberpunk street with neon signs" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0V0XGVDWlz6UNNlLJSJiFeA0w-s2P5NKNNBSNEG5_oQTAmiPcEKyIEATWTzlan91I_Byrgun7Rp0yUIKPrjMGvuFLhOSInRuEWm4v-edILhRpwoA4JK8YWCf7n4Bc3ux6u8wr3sN72wGk6OCTF6tAi3BfB4E6zgHwTEvaTngeNAJSllsU6CH8NOTbvp4P3tTThyWrpD5tMsHuoxlxUnHSz-vFrfsa01u3Ra_S63KTzXha_inW_R4FwKuBsfl2j8anEck4RM5cKJA"/>
+</div>
+<!-- Photo Item -->
+<div class="relative group cursor-pointer aspect-square rounded overflow-hidden neon-border">
+<img alt="Data stream matrix" class="w-full h-full object-cover" data-alt="Green and blue digital data stream" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTSrvyOSPaVtNcqmgNOXK4SMl432Tf8vP4m0TzVZ3la6pD35Xl7duhwxQsrmDa4JqmD_Q7VUqdahyykJQS7nKzwJZhwVDWxKeUHUc8IrzTqpwCn_OjGu7CWZ_kOmgLtzd_WqBMz845MsxlAOdOU9R9Ja6pNtIQGAOKWTpF7gOJ4Zj4gsb_blYgdqD009Lmc8dOmhegDuajkA5yn-YLwqG4p_u9K2_LVgd241aiie37tYbt9sbXOj7V33i0tFUIgYx3g4bEsn7Ydc4"/>
+</div>
+<!-- Video Item -->
+<div class="relative group cursor-pointer aspect-square rounded overflow-hidden neon-border">
+<img alt="Security matrix interface" class="w-full h-full object-cover opacity-80" data-alt="Digital cybersecurity code interface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKS8rJEatCgd0hVplGS2tYEnFX4y39Z9NoHXr2lcyKMSQ7Mn0GnBK6EwpJi5YD_xrHk5v1EYihgSGuc4DzqpWAptc0GM1l5Xc4U1keL1po-dSzsE0GxV5Ld4imP-SyzUaDsrYfP_hN1b1WfHhMh_yNGmjreFl4sBNN7uZOJuEX0b2ZIKAOYx1dfrftPtun5A8zSOH9hFq1-Fy5NbZG4nejV0XUnX2zfOpmrwGZ_GLbBcUvCL3TQgmQyae9DL6G00f6gGvOJpei1f4"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">play_circle</span>
+</div>
+<div class="absolute bottom-1 right-1 bg-background-dark/80 px-1.5 py-0.5 rounded text-[10px] text-primary">
+                    3:14
+                </div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 glass-header border-t-0 border-b-0 border-primary/20">
+<div class="flex items-center justify-around h-20 px-4">
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<div class="relative">
+<span class="material-symbols-outlined text-2xl fill-1">grid_view</span>
+<div class="absolute -top-1 -right-1 size-2 bg-primary rounded-full neon-shadow animate-pulse"></div>
+</div>
+<span class="text-[10px] font-bold">Gallery</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">chat_bubble</span>
+<span class="text-[10px] font-medium">Chat</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">account_circle</span>
+<span class="text-[10px] font-medium">Profile</span>
+</a>
+</div>
+</nav>
+<!-- Overlay Preview (Hidden by default, used for clicking simulation) -->
+<!-- This would normally be toggled by JS. Representing state here. -->
+<div class="fixed inset-0 z-[60] bg-background-dark/95 backdrop-blur-xl flex flex-col hidden">
+<div class="p-4 flex justify-between items-center">
+<button class="size-10 rounded-full bg-surface-dark border border-primary/20 flex items-center justify-center text-slate-100">
+<span class="material-symbols-outlined">close</span>
+</button>
+<div class="text-center">
+<p class="text-xs text-slate-400 font-medium">Shared by Alex M.</p>
+<p class="text-[10px] text-primary">Oct 24, 2023</p>
+</div>
+<button class="size-10 rounded-full bg-surface-dark border border-primary/20 flex items-center justify-center text-slate-100">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+<div class="flex-1 flex items-center justify-center p-4">
+<img alt="Enlarged photo view" class="max-w-full max-h-[70vh] rounded-lg shadow-2xl shadow-primary/20 border border-primary/30" data-alt="Full screen preview of minimalist architecture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9IsE1XqADpnyMIRM92y9x8cnY4d5Lb0OqQrsROXl8JX-EtvBIhmIeAXDsoTmxLjcLUPUhw8XPUu8M4jELKtthP9yNDy57_usiMVefCIdkitbz4QT54gbh5AlDU5fy32YDb0y1O-0Kk3wdxU1Z5iPC7kL2H8v1E3lBQXFRcvatc4Eydwj-MHs4cAaZU6DUC8SfiZqYziTxT5_cLjcBKqf0a1SHtSYECcq_XFUB4B9BylPbCsU3PItf1BeWv9PmsLrYOoQ2fZbliZw"/>
+</div>
+<div class="p-8 flex justify-center gap-6">
+<button class="flex items-center gap-2 px-6 py-3 rounded-full bg-surface-dark border border-primary/30 text-primary font-bold">
+<span class="material-symbols-outlined">download</span> Save
+            </button>
+<button class="flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-background-dark font-bold neon-shadow">
+<span class="material-symbols-outlined">favorite</span> Like
+            </button>
+</div>
+</div>
+</body></html>

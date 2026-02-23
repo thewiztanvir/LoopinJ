@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Loopin J - Empty State</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00ffff",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#0f2323",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4), 0 0 30px rgba(0, 255, 255, 0.2);
+        }
+        .text-glow {
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+        }
+        .bg-grid {
+            background-image: linear-gradient(to right, rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-hidden">
+<div class="relative flex h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-hidden">
+<!-- Subtle Grid Background -->
+<div class="absolute inset-0 bg-grid pointer-events-none"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-background-dark/50 to-background-dark pointer-events-none"></div>
+<!-- Top Header -->
+<header class="relative z-10 flex items-center justify-between px-6 py-6 border-b border-primary/10 bg-background-dark/40 backdrop-blur-md">
+<button class="flex items-center justify-center size-10 rounded-full border border-primary/20 bg-primary/5 hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold tracking-widest uppercase text-glow">Loopin J</h1>
+<button class="flex items-center justify-center size-10 rounded-full border border-primary/20 bg-primary/5 hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-primary">settings</span>
+</button>
+</header>
+<!-- Main Empty State Content -->
+<main class="relative z-10 flex flex-1 flex-col items-center justify-center px-6 text-center">
+<!-- Central Visual Asset (Robot/Orb) -->
+<div class="relative mb-12 flex items-center justify-center">
+<!-- Outer Pulsing Glow -->
+<div class="absolute size-48 rounded-full bg-primary/10 blur-3xl animate-pulse"></div>
+<!-- Stylized Robot/Orb Component -->
+<div class="relative size-64 flex items-center justify-center">
+<div class="absolute inset-0 rounded-full border-2 border-primary/30 border-dashed animate-[spin_20s_linear_infinite]"></div>
+<div class="absolute inset-4 rounded-full border border-primary/40 animate-[spin_15s_linear_infinite_reverse]"></div>
+<!-- The Robot Face/Orb Core -->
+<div class="relative size-32 rounded-full bg-slate-900 border-2 border-primary flex flex-col items-center justify-center neon-glow overflow-hidden">
+<!-- Scanning line -->
+<div class="absolute top-0 w-full h-1 bg-primary/50 blur-sm animate-[bounce_3s_infinite]"></div>
+<!-- Eyes -->
+<div class="flex gap-4 mb-2">
+<div class="size-3 rounded-full bg-primary animate-pulse"></div>
+<div class="size-3 rounded-full bg-primary animate-pulse"></div>
+</div>
+<!-- Data Waveform -->
+<div class="flex gap-0.5 items-end h-4">
+<div class="w-1 bg-primary/60 h-2"></div>
+<div class="w-1 bg-primary h-4"></div>
+<div class="w-1 bg-primary/60 h-3"></div>
+<div class="w-1 bg-primary h-2"></div>
+<div class="w-1 bg-primary/60 h-1"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Text Content -->
+<div class="max-w-md space-y-4">
+<h2 class="text-3xl font-bold tracking-tighter text-slate-100 uppercase">
+                    No loops yet
+                </h2>
+<p class="text-slate-400 text-lg leading-relaxed font-light">
+                    Start a new connection and begin the frequency. Your digital network is waiting to be built.
+                </p>
+</div>
+<!-- Primary Action -->
+<div class="mt-12 w-full max-w-xs">
+<button class="w-full flex items-center justify-center gap-3 bg-primary text-background-dark font-bold text-lg h-14 rounded-full neon-glow hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined">bolt</span>
+                    Start Chatting
+                </button>
+<p class="mt-4 text-xs text-primary/40 uppercase tracking-[0.2em] font-medium">Protocol: Active Connection</p>
+</div>
+</main>
+<!-- Bottom Navigation (from components list) -->
+<nav class="relative z-10 flex gap-2 border-t border-primary/10 bg-background-dark/80 backdrop-blur-xl px-4 pb-8 pt-4">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary/60 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Home</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">chat_bubble</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Loops</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary/60 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">add_circle</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Connect</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary/60 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Profile</p>
+</a>
+</nav>
+</div>
+</body></html>

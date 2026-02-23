@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Loopin J - Group Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00ffff",
+                        "accent-purple": "#a855f7",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#000000",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-input {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #a855f7 0%, #00ffff 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col items-center">
+<div class="relative flex h-screen w-full max-w-[480px] flex-col bg-background-light dark:bg-background-dark overflow-hidden">
+<!-- Header -->
+<header class="flex items-center p-6 justify-between">
+<button class="flex items-center justify-center size-10 rounded-full bg-slate-200 dark:bg-white/10 text-slate-900 dark:text-white">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex flex-col items-center">
+<h1 class="text-lg font-bold tracking-tight">Group Details</h1>
+<p class="text-xs text-primary font-medium tracking-widest uppercase">Step 2 of 2</p>
+</div>
+<div class="size-10"></div> <!-- Spacer for centering -->
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto px-6 pb-32">
+<!-- Group Icon Upload -->
+<div class="flex flex-col items-center py-8">
+<div class="relative group cursor-pointer">
+<div class="size-32 rounded-full border-2 border-dashed border-primary/40 flex flex-col items-center justify-center bg-primary/5 hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-4xl text-primary mb-1">photo_camera</span>
+<span class="text-[10px] font-bold text-primary uppercase tracking-tighter">Upload Icon</span>
+</div>
+<div class="absolute bottom-0 right-0 size-10 rounded-full bg-primary flex items-center justify-center text-black shadow-lg">
+<span class="material-symbols-outlined text-xl">add</span>
+</div>
+</div>
+</div>
+<!-- Group Name Input -->
+<div class="space-y-3 mb-8">
+<label class="text-sm font-semibold text-slate-400 ml-4">Group Name</label>
+<div class="relative">
+<input class="glass-input w-full h-14 rounded-full px-6 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all border-none" placeholder="Enter group name..." type="text"/>
+</div>
+</div>
+<!-- Selected Members Section -->
+<div class="space-y-4">
+<div class="flex justify-between items-center px-1">
+<h2 class="text-sm font-semibold text-slate-400">Selected Members (4)</h2>
+<button class="text-xs font-bold text-primary">Edit</button>
+</div>
+<div class="grid grid-cols-4 gap-4">
+<!-- Member 1 -->
+<div class="flex flex-col items-center gap-2">
+<div class="relative">
+<div class="size-14 rounded-full bg-cover bg-center border-2 border-primary/20" data-alt="Avatar of a male team member" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAOK6XxHDAl-n5XDafqqPCECl54r56adNGhF_sjUAkOd1uhJYyIqJcCuyg9Kan0aVQg_-i05BcgzRZRaJbhdYr1eHQjNIhtQiCybRq6onzl0Vduz3Ov2IK72u4YdRF2rqQdeqCwrmxXk6_Q6HkWuUaMltcsFH-Z4pffW_bWGmeCeqLF9Y-Yz9NUkECyW9nOUOLfW7tMNCk-vBXWYzhkHszSCS9DRM_c7RJ6k2LEiYyu6lEc9AOSJkh3MaR3eFCqg0gxokvAx8E1bvc');"></div>
+<button class="absolute -top-1 -right-1 size-5 bg-red-500 rounded-full flex items-center justify-center text-[10px] text-white">
+<span class="material-symbols-outlined text-xs">close</span>
+</button>
+</div>
+<span class="text-[10px] text-slate-400 font-medium">Alex</span>
+</div>
+<!-- Member 2 -->
+<div class="flex flex-col items-center gap-2">
+<div class="relative">
+<div class="size-14 rounded-full bg-cover bg-center border-2 border-primary/20" data-alt="Avatar of a female team member" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAhhQMluXJsm19wMqg9_VYtVonowzchnJVyd8iw3hdheVsqQibLSsXRvPH8hMtjfceROCPSA-1NxRkYGoZ_R64l_ECqcks4opY-WS51OP1KYeVSCdCTvkoPcQG5UvWEGdzN1g7fuIzXVBINeMP53W38j-fl3ZcEKTKYqySgdQq80lm2yXfHGvHIZ6NK7SGcxgKjXEXQjyNHo85BYvZnOfldxmHxfRA8AOx_ql3RX-RoeN5hHj8dO9r5ysskxITG91atrkLMjEJTRJ4');"></div>
+<button class="absolute -top-1 -right-1 size-5 bg-red-500 rounded-full flex items-center justify-center text-[10px] text-white">
+<span class="material-symbols-outlined text-xs">close</span>
+</button>
+</div>
+<span class="text-[10px] text-slate-400 font-medium">Sarah</span>
+</div>
+<!-- Member 3 -->
+<div class="flex flex-col items-center gap-2">
+<div class="relative">
+<div class="size-14 rounded-full bg-cover bg-center border-2 border-primary/20" data-alt="Avatar of a creative team member" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC5A0u8rwm_G_z7RNxK477ApWXscV6Y5ESpn873_N2VceFWSTEjGz7YHMFFx-T-UJVV0hApzYnvmXC7Yhbi_QusUOD91acpt4N9mDETgA0WmAn_Rx2Si0id7xUwajWEziS4ddkmOvQECbkVwihDL9dc5-7D8pJsJJ7QluOvhYqvEHXIgqQe3HdsM-5F1JX3U7rCeFf7BaDGe9HRTD-SY5XQbGaosAVeHkjOdnN-OoCM6syd80f8mxmZVM44iFTV54BR1BNk_6JuM7g');"></div>
+<button class="absolute -top-1 -right-1 size-5 bg-red-500 rounded-full flex items-center justify-center text-[10px] text-white">
+<span class="material-symbols-outlined text-xs">close</span>
+</button>
+</div>
+<span class="text-[10px] text-slate-400 font-medium">Jordan</span>
+</div>
+<!-- Member 4 -->
+<div class="flex flex-col items-center gap-2">
+<div class="relative">
+<div class="size-14 rounded-full bg-cover bg-center border-2 border-primary/20" data-alt="Avatar of a senior team member" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAB143wxcVvmJcNFkhx7_9Cr833soDtycLqDYb8oFpa_IulBhACAy3DfSy3TNil6IiBeqfXxzKLHz3RBIrGTrbWy77D2KKBW8cbowJ-AvsZr_OybNqkS5hnCO22WVx6C7X9H7pbvH-NNQP5ACxiVCDNAN3fm2VYVjPdmiUVxKyBgKHcAn6uEYTjnl5SudHf3pyRHrwDkBUH2s54IJoIxJTd9KCRxRfK9CI-VyXGW9XMDy87cl6nforoLL3BDZ9w-45_9DgWHBW5O8s');"></div>
+<button class="absolute -top-1 -right-1 size-5 bg-red-500 rounded-full flex items-center justify-center text-[10px] text-white">
+<span class="material-symbols-outlined text-xs">close</span>
+</button>
+</div>
+<span class="text-[10px] text-slate-400 font-medium">Maria</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Action Section / Bottom Button -->
+<div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-background-dark via-background-dark/90 to-transparent">
+<button class="btn-gradient neon-glow w-full h-16 rounded-full flex items-center justify-center gap-2 shadow-xl shadow-primary/20 active:scale-95 transition-transform">
+<span class="text-black font-bold text-lg">Create Group</span>
+<span class="material-symbols-outlined text-black font-bold">check_circle</span>
+</button>
+</div>
+</div>
+</body></html>

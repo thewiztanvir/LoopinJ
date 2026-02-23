@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Loopin J - Video Call</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00ffff",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#0f2323",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom Neon Glow Effects */
+        .text-glow {
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        .box-glow {
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2), inset 0 0 10px rgba(0, 255, 255, 0.1);
+        }
+        .btn-glow {
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+        }
+        .btn-danger-glow {
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+        }
+        
+        /* Glassmorphism Utilities */
+        .glass-panel {
+            background: rgba(15, 35, 35, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+        }
+        
+        /* Hide scrollbar for clean UI */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased overflow-hidden h-screen w-screen relative">
+<!-- Main Video Feed (Full Screen Background) -->
+<div class="absolute inset-0 w-full h-full z-0">
+<img alt="Futuristic portrait of a woman with neon lighting" class="w-full h-full object-cover filter brightness-75" data-alt="Main caller video feed showing a young woman looking at the camera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVSqzIr2MWf-xM2SxPIw50Go6bZ-XTK4vGDYByHJFPRSFfk8xjpeVwatRo0_ZywK5RNJIR53lmQM7OIH4MwM7BWqsk61A0hWn7OgnCK50t4OhmZTA8INQ0vlTAm3NNdyKUdM7a2HA0lEdRWIg2z-GXP6dSYWvnjDQMKYlSDGtsDZHy9HleBzjgzB-JlVXmdWFqS60kqYdMTwRAXSBCueRnMlHvH85tQFWhBqcU30WfXh0w7Q6zgVe98h0Lg66GmPOT85lGwbxUcVo"/>
+<!-- Vignette overlay for text readability -->
+<div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 pointer-events-none"></div>
+</div>
+<!-- UI Overlay Layer -->
+<div class="relative z-10 flex flex-col h-full justify-between p-6 pb-12 safe-area-inset-bottom">
+<!-- Top Header: Name & Timer -->
+<div class="flex flex-col items-center pt-8 animate-fade-in-down">
+<h1 class="text-white text-3xl font-bold tracking-tight mb-2 drop-shadow-md">Sarah Connor</h1>
+<div class="glass-panel px-4 py-1 rounded-full flex items-center gap-2 box-glow">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span class="text-primary font-mono font-medium tracking-widest text-glow">04:23</span>
+</div>
+<div class="mt-2 text-primary/60 text-xs uppercase tracking-widest font-semibold">Encrypted Connection</div>
+</div>
+<!-- Draggable Picture-in-Picture (PiP) -->
+<!-- Positioning it absolutely within the container to simulate floating/draggable behavior -->
+<div class="absolute top-28 right-4 w-28 h-40 glass-panel rounded-lg overflow-hidden shadow-2xl border border-primary/30 group cursor-pointer transition-transform active:scale-95">
+<img alt="Selfie camera view of a man" class="w-full h-full object-cover" data-alt="Small picture in picture video feed showing the user" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBb0DV2KuBp0CyaHIuHayKLGVoQXa9VoZKukjqlXhB7mppwEBomulNsKUhOk-VlEPPNbCp035zJEhRGQkbxbQW462i3v85a7TTgBE1uVTEPZWvL4oRo6Hu1_ohLskB_CpEVDaLJ-I2KOJMX1gzqjANC3qpXJ6jZVeWCjSvg9jll_rOSRmWbJzgimHaVLBj4emGJ5giS8AGPv4Kwga_t6y-z0lbpQjgWYb_Za82zbGMMNnAiPANst7J_pF66t96IOw7Zgmifs9NTmwA"/>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+<!-- PiP Controls Overlay (visible on hover/tap) -->
+<div class="absolute bottom-2 right-2">
+<span class="material-symbols-outlined text-white/80 text-[18px]">cached</span>
+</div>
+</div>
+<!-- Bottom Controls Dock -->
+<div class="w-full flex flex-col items-center gap-6 mb-4">
+<!-- Connection Quality Indicator (Optional nice-to-have) -->
+<div class="flex items-center gap-1 opacity-60">
+<span class="h-1 w-1 rounded-full bg-primary"></span>
+<span class="h-1.5 w-1 rounded-full bg-primary"></span>
+<span class="h-2 w-1 rounded-full bg-primary"></span>
+<span class="h-2.5 w-1 rounded-full bg-primary/30"></span>
+<span class="text-[10px] text-primary ml-1 font-medium">HD</span>
+</div>
+<!-- Main Control Bar -->
+<div class="glass-panel rounded-full p-2 pl-6 pr-6 flex items-center justify-between gap-6 w-full max-w-sm box-glow">
+<!-- Mute Toggle -->
+<button class="flex flex-col items-center justify-center gap-1 group">
+<div class="h-12 w-12 rounded-full bg-white/5 hover:bg-primary/20 border border-white/10 hover:border-primary/50 flex items-center justify-center transition-all duration-300">
+<span class="material-symbols-outlined text-white group-hover:text-primary transition-colors">mic_off</span>
+</div>
+<span class="text-[10px] text-white/60 font-medium tracking-wide">Mute</span>
+</button>
+<!-- Video Toggle -->
+<button class="flex flex-col items-center justify-center gap-1 group">
+<div class="h-12 w-12 rounded-full bg-white/5 hover:bg-primary/20 border border-white/10 hover:border-primary/50 flex items-center justify-center transition-all duration-300">
+<span class="material-symbols-outlined text-white group-hover:text-primary transition-colors">videocam_off</span>
+</div>
+<span class="text-[10px] text-white/60 font-medium tracking-wide">Video</span>
+</button>
+<!-- End Call (Prominent) -->
+<button class="flex flex-col items-center justify-center gap-1 transform -translate-y-2">
+<div class="h-16 w-16 rounded-full bg-red-500 hover:bg-red-600 flex items-center justify-center shadow-lg btn-danger-glow transition-all duration-300 active:scale-95">
+<span class="material-symbols-outlined text-white text-3xl">call_end</span>
+</div>
+<span class="text-[10px] text-red-400 font-bold tracking-wide">End</span>
+</button>
+<!-- Flip Camera -->
+<button class="flex flex-col items-center justify-center gap-1 group">
+<div class="h-12 w-12 rounded-full bg-white/5 hover:bg-primary/20 border border-white/10 hover:border-primary/50 flex items-center justify-center transition-all duration-300">
+<span class="material-symbols-outlined text-white group-hover:text-primary transition-colors">flip_camera_ios</span>
+</div>
+<span class="text-[10px] text-white/60 font-medium tracking-wide">Flip</span>
+</button>
+<!-- Chat/More (Secondary) -->
+<button class="flex flex-col items-center justify-center gap-1 group">
+<div class="h-12 w-12 rounded-full bg-white/5 hover:bg-primary/20 border border-white/10 hover:border-primary/50 flex items-center justify-center transition-all duration-300">
+<span class="material-symbols-outlined text-white group-hover:text-primary transition-colors">chat_bubble</span>
+</div>
+<span class="text-[10px] text-white/60 font-medium tracking-wide">Chat</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

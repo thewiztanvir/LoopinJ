@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Password Reset Success - Loopin J</title>
+<!-- Fonts and Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8c25f4",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#191022",
+                        "neon-green": "#39FF14",
+                        "neon-cyan": "#00f3ff",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem", 
+                        "lg": "2rem", 
+                        "xl": "3rem", 
+                        "full": "9999px"
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    },
+                    boxShadow: {
+                        'neon-green': '0 0 20px rgba(57, 255, 20, 0.5), 0 0 10px rgba(57, 255, 20, 0.3)',
+                        'neon-purple': '0 0 20px rgba(140, 37, 244, 0.5), 0 0 10px rgba(140, 37, 244, 0.3)',
+                        'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Confetti Animation Simulators - Static CSS representation of dynamic particles */
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: transparent;
+            opacity: 0.6;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .confetti:nth-child(1) { left: 10%; top: 80%; background: #8c25f4; animation-delay: 0s; width: 6px; height: 6px; }
+        .confetti:nth-child(2) { left: 20%; top: 70%; background: #39FF14; animation-delay: 1.5s; border-radius: 50%; }
+        .confetti:nth-child(3) { left: 80%; top: 60%; background: #00f3ff; animation-delay: 2s; width: 10px; height: 4px; }
+        .confetti:nth-child(4) { left: 60%; top: 85%; background: #8c25f4; animation-delay: 0.5s; width: 8px; height: 8px; }
+        .confetti:nth-child(5) { left: 90%; top: 75%; background: #39FF14; animation-delay: 3s; border-radius: 50%; }
+        .confetti:nth-child(6) { left: 30%; top: 90%; background: #00f3ff; animation-delay: 1s; width: 5px; height: 10px; }
+        .confetti:nth-child(7) { left: 50%; top: 65%; background: #ff00ff; animation-delay: 2.5s; width: 6px; height: 6px; }
+
+        /* Text Glow Utilities */
+        .text-glow-white {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.4), 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+        
+        .bg-glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased selection:bg-neon-green selection:text-black min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+<!-- Ambient Background Effects -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+<!-- Deep gradient wash -->
+<div class="absolute inset-0 bg-gradient-to-b from-[#191022] via-[#1a0b2e] to-[#0a0510]"></div>
+<!-- Large diffuse glowing orbs -->
+<div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[100px] opacity-40 mix-blend-screen"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-neon-cyan/10 rounded-full blur-[80px] opacity-30 mix-blend-screen"></div>
+<!-- Confetti Particles -->
+<div class="confetti"></div>
+<div class="confetti"></div>
+<div class="confetti"></div>
+<div class="confetti"></div>
+<div class="confetti"></div>
+<div class="confetti"></div>
+<div class="confetti"></div>
+</div>
+<!-- Main Content Container (Glass Card) -->
+<main class="relative z-10 w-full max-w-md px-6 py-12 flex flex-col items-center justify-center min-h-screen">
+<!-- Glassmorphism Card Wrapper -->
+<div class="w-full bg-glass rounded-[2.5rem] p-8 flex flex-col items-center shadow-glass relative overflow-hidden group">
+<!-- Subtle top shine -->
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+<!-- Success Icon Container -->
+<div class="relative mb-10 mt-4 group-hover:scale-105 transition-transform duration-500 ease-out">
+<!-- Glowing rings behind -->
+<div class="absolute inset-0 bg-neon-green/20 rounded-full blur-xl animate-pulse"></div>
+<!-- Icon Circle -->
+<div class="relative w-28 h-28 rounded-full bg-[#191022]/80 border border-neon-green/30 flex items-center justify-center shadow-neon-green backdrop-blur-md">
+<span class="material-symbols-outlined text-6xl text-neon-green font-bold" style="font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;">
+                        check
+                    </span>
+</div>
+</div>
+<!-- Text Content -->
+<div class="text-center space-y-4 mb-10 w-full">
+<h1 class="text-white text-3xl font-extrabold tracking-tight leading-tight text-glow-white">
+                    Password Reset<br/>Successful
+                </h1>
+<p class="text-slate-300 dark:text-slate-300 text-base font-medium leading-relaxed opacity-80 px-4">
+                    Your password has been updated securely. You're all set to get back in the loop.
+                </p>
+</div>
+<!-- Illustration/Visual (Abstract Connection) -->
+<div class="w-full h-32 mb-8 rounded-2xl overflow-hidden relative bg-black/20 border border-white/5">
+<div class="absolute inset-0 opacity-60 mix-blend-screen" data-alt="Abstract neon purple and cyan fluid gradient waves representing digital security flow" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAMtd5OK8YENAQwj1PwdmNXq2jcYH9GPUxsg3eGzXOvmYtf3oMbEnEaOzHh1S969g4m-Id95Pv9AjOVXOJUoo4Iz_lSBFe2FIRUH7rs9MUqOC08IZtlf8NYbPYH3UOvMgIINwaCvgJOIXsmVx9fQ3d6BZmkD788uklwlmc-cdzfWn_NDEmLqxBCKLcZ1uclf9xU6PCm-B09BGws3YVbevjoD9lnr5PpspMwsIvnllDTkYt3Q2xqvOMaO5P07_anpCVNcna71a2QgRI'); background-size: cover; background-position: center;">
+</div>
+<!-- Overlay gradient to fade out edges -->
+<div class="absolute inset-0 bg-gradient-to-t from-[#191022]/80 to-transparent"></div>
+<!-- Status pill inside image area -->
+<div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-black/40 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
+<span class="w-2 h-2 rounded-full bg-neon-green shadow-[0_0_8px_#39FF14]"></span>
+<span class="text-xs font-semibold text-white tracking-wide uppercase">Secured</span>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full relative overflow-hidden group/btn rounded-full h-14 bg-gradient-to-r from-[#8c25f4] to-[#4a00e0] hover:to-[#5b10f0] shadow-neon-purple transition-all duration-300 transform hover:-translate-y-1 active:scale-95">
+<!-- Button Shine Effect -->
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700 ease-in-out"></div>
+<div class="relative flex items-center justify-center gap-3">
+<span class="text-white text-lg font-bold tracking-wide">Log In Now</span>
+<span class="material-symbols-outlined text-white transition-transform group-hover/btn:translate-x-1" style="font-variation-settings: 'wght' 600;">
+                        arrow_forward
+                    </span>
+</div>
+</button>
+</div>
+<!-- Bottom Safe Area Spacer -->
+<div class="h-8"></div>
+</main>
+</body></html>

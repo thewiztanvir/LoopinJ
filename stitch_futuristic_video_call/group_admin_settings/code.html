@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Loopin J - Group Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0df2f2",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#050505", // Deep black for neon contrast
+                        "glass-surface": "rgba(255, 255, 255, 0.03)",
+                        "glass-border": "rgba(255, 255, 255, 0.08)",
+                        "danger": "#ff2a6d",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "neon": "0 0 10px rgba(13, 242, 242, 0.5), 0 0 20px rgba(13, 242, 242, 0.3)",
+                        "neon-danger": "0 0 15px rgba(255, 42, 109, 0.4), 0 0 30px rgba(255, 42, 109, 0.2)",
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "1.5rem", "xl": "2rem", "2xl": "2.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .safe-top {
+            padding-top: max(1.25rem, env(safe-area-inset-top));
+        }
+        
+        .safe-bottom {
+            padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased overflow-x-hidden selection:bg-primary/30">
+<div class="relative min-h-screen w-full flex flex-col max-w-md mx-auto shadow-2xl overflow-hidden bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&amp;w=2070&amp;auto=format&amp;fit=crop')] bg-cover bg-fixed bg-center" data-alt="Abstract dark cyberpunk background texture with subtle grid">
+<!-- Overlay to ensure dark mode readability -->
+<div class="absolute inset-0 bg-background-dark/90 backdrop-blur-sm z-0"></div>
+<!-- Content Wrapper -->
+<div class="relative z-10 flex flex-col h-full">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between px-4 pb-4 pt-14 safe-top sticky top-0 z-50 glass-panel border-b-0 rounded-b-xl shadow-lg">
+<button class="text-slate-200 hover:text-primary transition-colors flex size-10 items-center justify-center rounded-full active:bg-white/10">
+<span class="material-symbols-outlined !text-[28px]">chevron_left</span>
+</button>
+<h2 class="text-white text-base font-semibold tracking-wide">Group Settings</h2>
+<button class="text-primary font-bold text-sm tracking-wide px-3 py-1 rounded-full hover:bg-primary/10 transition-colors">
+                    Edit
+                </button>
+</header>
+<main class="flex-1 overflow-y-auto pb-24 safe-bottom scrollbar-hide">
+<!-- Hero Section -->
+<div class="flex flex-col items-center pt-8 pb-8 px-6">
+<div class="relative group cursor-pointer">
+<div class="absolute -inset-1 rounded-full bg-gradient-to-tr from-primary via-blue-500 to-purple-600 opacity-75 blur group-hover:opacity-100 transition duration-500 animate-pulse"></div>
+<div class="relative size-32 rounded-full p-[3px] bg-background-dark overflow-hidden">
+<div class="w-full h-full rounded-full bg-cover bg-center" data-alt="Cyberpunk group avatar with neon lights" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDEUsv_FYxIoipqou4-Iyc9VO7co_KCWh7WgIhmPkalvBCIG2b4lByilLtCS8HeEHbrLoPrJcgIFvmb8R3Hrt7agMuev1Gv0CwTum0pPFpj8jYY2N56MIrhtLY40CEeXiRagsfBi6jSeqfIU4gs_a7cc_YPClxDEGJcOd0NMZ5dnK8SARYx3gxZE7NAh8zBV0JAMbgDe3HBYIAnm3wIcxSycuKpDIIcvSi5iD8tpj3Va0RdApqoub_ikOjktRBvwxzrn355WS0cZpU');"></div>
+</div>
+<div class="absolute bottom-1 right-1 bg-background-dark rounded-full p-1.5 border border-glass-border shadow-lg">
+<span class="material-symbols-outlined text-primary text-sm font-bold block">edit</span>
+</div>
+</div>
+<h1 class="mt-5 text-2xl font-bold text-white tracking-tight text-center">Cyberpunk Poets</h1>
+<p class="text-slate-400 text-sm font-medium mt-1 text-center">Created 2077 • 12 Members</p>
+<p class="text-slate-500 text-xs mt-3 max-w-[240px] text-center leading-relaxed">Coding haikus and dreaming of electric sheep in the neon void.</p>
+<!-- Quick Actions -->
+<div class="flex gap-4 mt-8 w-full justify-center">
+<button class="flex flex-col items-center gap-2 group">
+<div class="size-12 rounded-full glass-panel flex items-center justify-center group-active:scale-95 transition-transform group-hover:border-primary/50">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</div>
+<span class="text-xs text-slate-300 font-medium">Mute</span>
+</button>
+<button class="flex flex-col items-center gap-2 group">
+<div class="size-12 rounded-full glass-panel flex items-center justify-center group-active:scale-95 transition-transform group-hover:border-primary/50">
+<span class="material-symbols-outlined text-primary">search</span>
+</div>
+<span class="text-xs text-slate-300 font-medium">Search</span>
+</button>
+<button class="flex flex-col items-center gap-2 group">
+<div class="size-12 rounded-full glass-panel flex items-center justify-center group-active:scale-95 transition-transform group-hover:border-primary/50">
+<span class="material-symbols-outlined text-primary">photo_library</span>
+</div>
+<span class="text-xs text-slate-300 font-medium">Media</span>
+</button>
+<button class="flex flex-col items-center gap-2 group">
+<div class="size-12 rounded-full glass-panel flex items-center justify-center group-active:scale-95 transition-transform group-hover:border-primary/50">
+<span class="material-symbols-outlined text-primary">share</span>
+</div>
+<span class="text-xs text-slate-300 font-medium">Link</span>
+</button>
+</div>
+</div>
+<!-- Settings Toggles -->
+<div class="px-4 mt-2 mb-6">
+<div class="glass-panel rounded-xl overflow-hidden p-1">
+<div class="flex items-center justify-between p-4 hover:bg-white/5 transition-colors rounded-lg cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="p-2 rounded-full bg-blue-500/20 text-blue-400">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</div>
+<span class="text-slate-200 font-medium text-sm">Lock Group</span>
+</div>
+<!-- Toggle Switch -->
+<div class="relative inline-flex h-6 w-11 items-center rounded-full bg-slate-700 transition-colors focus:outline-none">
+<span class="translate-x-1 inline-block size-4 transform rounded-full bg-white transition-transform"></span>
+</div>
+</div>
+<div class="w-full h-px bg-glass-border mx-auto w-[90%]"></div>
+<div class="flex items-center justify-between p-4 hover:bg-white/5 transition-colors rounded-lg cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="p-2 rounded-full bg-purple-500/20 text-purple-400">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+</div>
+<span class="text-slate-200 font-medium text-sm">Approval Required</span>
+</div>
+<!-- Toggle Switch Active -->
+<div class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary/20 border border-primary/50 transition-colors focus:outline-none shadow-[0_0_10px_rgba(13,242,242,0.3)]">
+<span class="translate-x-6 inline-block size-4 transform rounded-full bg-primary shadow-sm transition-transform"></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Members Section -->
+<div class="px-4">
+<div class="flex items-center justify-between mb-3 px-1">
+<h3 class="text-slate-400 text-xs font-bold uppercase tracking-widest">Loopers (12)</h3>
+<button class="text-primary text-xs font-bold">See All</button>
+</div>
+<div class="glass-panel rounded-2xl overflow-hidden">
+<!-- Add Member -->
+<button class="w-full flex items-center gap-4 p-4 hover:bg-primary/5 transition-colors group text-left border-b border-glass-border">
+<div class="size-10 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary shadow-[0_0_15px_rgba(13,242,242,0.15)] group-hover:shadow-[0_0_20px_rgba(13,242,242,0.3)] transition-all">
+<span class="material-symbols-outlined">add</span>
+</div>
+<span class="text-primary font-semibold text-sm">Add Member</span>
+</button>
+<!-- Member List -->
+<div class="flex flex-col">
+<!-- Admin User -->
+<div class="flex items-center justify-between p-4 hover:bg-white/5 transition-colors group cursor-pointer border-b border-glass-border">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="size-10 rounded-full bg-slate-700 bg-cover bg-center ring-2 ring-primary/40 ring-offset-2 ring-offset-[#102323]" data-alt="Portrait of Sarah J" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCEC_J2Wdqd5ZJhpWJYZBTvv3jH_8ay-QgRpZTJw-bWSlChzvH6n6Fi9F_9rCxZC3xNSKAc0yAqQdQRCK2-bwTGlS87hsHKTCE-l6schLHvOyvJftEi9Migbxyx-z4t6PV8zmft_e9FUIDhaIqan6EqM0RcDsKAKYjL_-fQ-I2pCBxVU8BhqaqA58PpED2ZKq0qgoxrjfHgtdrUFthVrw772u-MXoqpoP16Cn2ZXOkX7VH6ENgiMYju00KH1rjt-y9_B6URqLk0BFQ');"></div>
+<div class="absolute bottom-0 right-0 size-2.5 bg-green-500 rounded-full border-2 border-[#102323]"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Sarah J. <span class="text-[10px] ml-1 px-1.5 py-0.5 rounded bg-primary/20 text-primary uppercase tracking-wide">Owner</span></span>
+<span class="text-slate-400 text-xs truncate max-w-[150px]">Status: Coding the future...</span>
+</div>
+</div>
+</div>
+<!-- Member 2 -->
+<div class="flex items-center justify-between p-4 hover:bg-white/5 transition-colors group cursor-pointer border-b border-glass-border">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="size-10 rounded-full bg-slate-700 bg-cover bg-center" data-alt="Portrait of Kael Thul" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCeMwOIDAkWJTsYF4ELdf267OIZVNWNPHKXHxzAMD_wRLLVlfzYgCh2SEJeJvjT_-y3AnTOnAvcDbLFHFkaap1LObY1NWrhZHFSMflbgbeSHJmNc1tcM4hUIHIfA-NE70dI550D-qEaLiMYw9wpOMvNv0IdNXlLpU9_0z8TGxdLE5OFcEZYX03F41xmhpSQZEGBcVZB8qlUgwgMKSZ4r_HspqU_Tt_89ijc4db8-rCHosLd0yrWTvWbnsOSb4rnQZxTeOeH98M9MU8');"></div>
+<div class="absolute bottom-0 right-0 size-2.5 bg-green-500 rounded-full border-2 border-[#102323]"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Kael Thul</span>
+<span class="text-slate-400 text-xs">Online</span>
+</div>
+</div>
+<button class="size-8 flex items-center justify-center rounded-full text-slate-500 hover:text-danger hover:bg-danger/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">remove_circle_outline</span>
+</button>
+</div>
+<!-- Member 3 -->
+<div class="flex items-center justify-between p-4 hover:bg-white/5 transition-colors group cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="size-10 rounded-full bg-slate-700 bg-cover bg-center grayscale opacity-70" data-alt="Portrait of Neo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCcePkEqjjNSaE3RErBcaPJBWvy9u13X901GWVhAFvsxMX8fovm4pufXOM6SCz32Rqs7zA4TCNak4JgK_VKmrIH03z0iiknOBRQNpEMV5nQzR9x79eoLKrEoMrh_aRm6pw7HxSiLsy4xPlkQA45h1bQj-DUmW2_6nvlGzRx8VmEDp8wWxDiDneP_69vu3Gdz6eks_dTSKjpGDcfZffm6jgGgN5RQS-ATayYLNRCqPS8wu2Eu1wcHge84MXFoy4RyaaW6jFUDhZdTng');"></div>
+<div class="absolute bottom-0 right-0 size-2.5 bg-slate-500 rounded-full border-2 border-[#102323]"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-300 text-sm font-medium">Neo</span>
+<span class="text-slate-500 text-xs">Last seen 5m ago</span>
+</div>
+</div>
+<button class="size-8 flex items-center justify-center rounded-full text-slate-500 hover:text-danger hover:bg-danger/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">remove_circle_outline</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Danger Zone -->
+<div class="px-4 mt-8 flex flex-col gap-3 pb-8">
+<button class="w-full relative overflow-hidden group rounded-xl p-[1px] shadow-neon-danger">
+<div class="absolute inset-0 bg-gradient-to-r from-danger via-red-500 to-danger opacity-50 group-hover:opacity-100 transition-opacity duration-300"></div>
+<div class="relative bg-background-dark h-full rounded-xl flex items-center justify-center gap-2 py-3.5 group-active:bg-background-dark/90 transition-colors">
+<span class="material-symbols-outlined text-danger">delete_forever</span>
+<span class="text-danger font-bold tracking-wide">Delete Group</span>
+</div>
+</button>
+<button class="w-full py-3 text-slate-500 text-sm font-medium hover:text-slate-300 transition-colors">
+                        Leave Group
+                    </button>
+</div>
+</main>
+</div>
+</div>
+</body></html>
