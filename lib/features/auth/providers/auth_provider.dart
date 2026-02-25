@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'auth_service.dart';
@@ -19,10 +20,13 @@ final currentUserModelProvider = FutureProvider<UserModel?>((ref) async {
   return ref.watch(authServiceProvider).getCurrentUserModel();
 });
 
-class AuthController extends StateNotifier<AsyncValue<void>> {
-  final AuthService _authService;
+class AuthController extends AsyncNotifier<void> {
+  late AuthService _authService;
 
-  AuthController(this._authService) : super(const AsyncData(null));
+  @override
+  FutureOr<void> build() {
+    _authService = ref.watch(authServiceProvider);
+  }
 
   Future<void> signIn(String email, String password) async {
     state = const AsyncLoading();
@@ -55,6 +59,6 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
   }
 }
 
-final authControllerProvider = StateNotifierProvider<AuthController, AsyncValue<void>>((ref) {
-  return AuthController(ref.watch(authServiceProvider));
+final authControllerProvider = AsyncNotifierProvider<AuthController, void>(() {
+  return AuthController();
 });

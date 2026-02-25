@@ -29,7 +29,11 @@ class WebRTCService {
     'iceServers': [
       {'urls': 'stun:stun.l.google.com:19302'}, // Fallback Google STUN
       {
-        'urls': 'turn:loopinj.metered.live:80',
+        'urls': [
+          'turn:loopinj.metered.live:80',
+          'turn:loopinj.metered.live:443',
+          'turn:loopinj.metered.live:443?transport=tcp'
+        ],
         'username': 'dMxq61psh7S2NpNU99NpOI05Xq32tyfqb_DpF1I5FpuN613A',
         'credential': 'dMxq61psh7S2NpNU99NpOI05Xq32tyfqb_DpF1I5FpuN613A'
       }

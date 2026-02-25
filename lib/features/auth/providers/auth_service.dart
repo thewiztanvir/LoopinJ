@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/user_model.dart';
-import '../../services/crypto_service.dart';
+import '../../../core/models/user_model.dart';
+import '../../../core/services/crypto_service.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -11,6 +11,8 @@ class AuthService {
   AuthService(this._cryptoService);
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
+
+  String get currentUserId => _auth.currentUser?.uid ?? '';
 
   Future<UserModel?> getCurrentUserModel() async {
     final user = _auth.currentUser;

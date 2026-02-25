@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../features/auth/screens/login_screen.dart';
+import '../../features/auth/screens/register_screen.dart';
+import '../../features/chat/screens/chat_dashboard_screen.dart';
 import '../../features/chat/screens/immersive_chat_screen.dart';
 import '../../features/call/screens/video_call_screen.dart';
 import '../../features/profile/screens/find_connections_screen.dart';
