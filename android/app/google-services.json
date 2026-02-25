@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "898153202674",
+    "project_id": "loopin-j",
+    "storage_bucket": "loopin-j.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:898153202674:android:d321a3b2f0226d6fb3616b",
+        "android_client_info": {
+          "package_name": "com.example.loopin_j_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpW2TH9fzSL45LPEx_b52f9rEIey72YWs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

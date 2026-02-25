@@ -1,19 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../features/auth/screens/login_screen.dart';
+import '../../features/auth/screens/register_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final GoRouter appRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '/',
+  initialLocation: '/login',
+  redirect: (context, state) {
+    // Basic synchronous check for Firebase Auth
+    final isLoggedIn = FirebaseAuth.instance.currentUser != null;
+    final isLoggingIn = state.matchedLocation == '/login' || state.matchedLocation == '/register';
+
+    if (!isLoggedIn && !isLoggingIn) return '/login';
+    if (isLoggedIn && isLoggingIn) return '/home';
+
+    return null;
+  },
   routes: [
     GoRoute(
-      path: '/',
-      builder: (context, state) => const PlaceholderScreen(title: 'Splash Screen'),
+      path: '/login',
+      builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
-      path: '/login',
-      builder: (context, state) => const PlaceholderScreen(title: 'Login Screen'),
+      path: '/register',
+      builder: (context, state) => const RegisterScreen(),
     ),
     GoRoute(
       path: '/home',
