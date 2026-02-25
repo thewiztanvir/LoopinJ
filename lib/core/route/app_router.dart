@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../features/auth/screens/login_screen.dart';
-import '../../features/auth/screens/register_screen.dart';
+import '../../features/chat/screens/immersive_chat_screen.dart';
+import '../../features/call/screens/video_call_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -30,7 +31,22 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: '/home',
-      builder: (context, state) => const PlaceholderScreen(title: 'Home / Chat Dashboard'),
+      builder: (context, state) => const ChatDashboardScreen(),
+    ),
+    GoRoute(
+      path: '/chat/:id',
+      builder: (context, state) {
+        final roomId = state.pathParameters['id']!;
+        return ImmersiveChatScreen(chatRoomId: roomId);
+      },
+    ),
+    GoRoute(
+      path: '/call/:remoteUserId',
+      builder: (context, state) {
+        final remoteUserId = state.pathParameters['remoteUserId']!;
+        final isCaller = state.uri.queryParameters['isCaller'] == 'true';
+        return VideoCallScreen(remoteUserId: remoteUserId, isCaller: isCaller);
+      },
     ),
   ],
 );

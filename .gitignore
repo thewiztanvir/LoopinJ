@@ -43,3 +43,21 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Node.js (Signaling Server)
+node_modules/
+npm-debug.log
+yarn-error.log
+.env
+signaling_server/node_modules/
+
+# Firebase configuration files
+google-services.json
+GoogleService-Info.plist
+firebase_options.dart
+firebase-debug.log
+firebase-debug.*.log
+
+# Private keys (just in case)
+*.pem
+*.key
