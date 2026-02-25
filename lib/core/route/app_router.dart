@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../features/auth/screens/login_screen.dart';
 import '../../features/chat/screens/immersive_chat_screen.dart';
 import '../../features/call/screens/video_call_screen.dart';
+import '../../features/profile/screens/find_connections_screen.dart';
+import '../../features/profile/screens/profile_settings_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -47,6 +49,14 @@ final GoRouter appRouter = GoRouter(
         final isCaller = state.uri.queryParameters['isCaller'] == 'true';
         return VideoCallScreen(remoteUserId: remoteUserId, isCaller: isCaller);
       },
+    ),
+    GoRoute(
+      path: '/find-connections',
+      builder: (context, state) => const FindConnectionsScreen(),
+    ),
+    GoRoute(
+      path: '/profile-settings',
+      builder: (context, state) => const ProfileSettingsScreen(),
     ),
   ],
 );

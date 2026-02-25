@@ -1,4 +1,4 @@
-# loopin_j_app
+# LoopinJ
 
 A new Flutter project.
 

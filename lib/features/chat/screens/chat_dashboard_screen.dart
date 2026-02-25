@@ -27,7 +27,13 @@ class ChatDashboardScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.person_search, color: AppColors.secondaryNeon),
             onPressed: () {
-              // TODO: Navigate to Find Neon Connections
+              context.push('/find-connections');
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.account_circle, color: AppColors.accentNeon),
+            onPressed: () {
+              context.push('/profile-settings');
             },
           ),
           IconButton(
@@ -78,7 +84,7 @@ class ChatDashboardScreen extends ConsumerWidget {
                   title: 'Secure Loop', // TODO: Fetch other user's name
                   subtitle: room.lastMessage ?? 'Tap to chat',
                   onTap: () {
-                    // TODO: Navigate to immersive chat room passing room ID
+                    context.push('/chat/${room.id}');
                   },
                 );
               },
