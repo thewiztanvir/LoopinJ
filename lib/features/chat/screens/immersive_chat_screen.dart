@@ -7,10 +7,15 @@ import '../../../core/theme/app_decorations.dart';
 import '../../../shared/widgets/neon_avatar.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../providers/chat_provider.dart';
+import '../models/chat_room_model.dart';
 
-/// Immersive chat room matching `immersive_chat_room` design.
-/// Features: neon grid background, glass header with avatar and call buttons,
-/// styled bubbles (glass for received, cyan gradient for sent), input bar.
+/// Provider to get the chat room data for resolving participant info
+final chatRoomProvider = FutureProvider.family<ChatRoomModel?, String>((ref, roomId) async {
+  final snapshot = await ref.watch(chatServiceProvider).getChatRooms().first;
+  return snapshot.where((r) => r.id == roomId).firstOrNull;
+});
+
+/// Immersive chat room — NOW with working E2EE messaging.
 class ImmersiveChatScreen extends ConsumerStatefulWidget {
   final String chatRoomId;
   const ImmersiveChatScreen({super.key, required this.chatRoomId});
@@ -23,6 +28,73 @@ class ImmersiveChatScreen extends ConsumerStatefulWidget {
 class _ImmersiveChatScreenState extends ConsumerState<ImmersiveChatScreen> {
   final _messageController = TextEditingController();
   final _scrollController = ScrollController();
+  
+  String? _otherUserId;
+  String? _otherUserName;
+  String? _otherUserPublicKey;
+  bool _isSending = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _resolveParticipants();
+  }
+
+  /// Resolve the other participant's info from the chat room
+  Future<void> _resolveParticipants() async {
+    final chatService = ref.read(chatServiceProvider);
+    final currentUid = ref.read(authServiceProvider).currentUserId;
+    
+    // Get chat room to find participants
+    final rooms = await chatService.getChatRooms().first;
+    final room = rooms.where((r) => r.id == widget.chatRoomId).firstOrNull;
+    
+    if (room != null) {
+      final otherUid = room.participantIds
+          .firstWhere((id) => id != currentUid, orElse: () => '');
+      
+      if (otherUid.isNotEmpty) {
+        final userService = ref.read(userServiceProvider);
+        final otherUser = await userService.getUserById(otherUid);
+        if (mounted && otherUser != null) {
+          setState(() {
+            _otherUserId = otherUid;
+            _otherUserName = otherUser.displayName;
+            _otherUserPublicKey = otherUser.publicKey;
+          });
+        }
+      }
+    }
+  }
+
+  /// Send an encrypted message
+  Future<void> _handleSend() async {
+    final text = _messageController.text.trim();
+    if (text.isEmpty || _otherUserPublicKey == null || _isSending) return;
+    
+    setState(() => _isSending = true);
+    _messageController.clear();
+    
+    try {
+      final chatService = ref.read(chatServiceProvider);
+      await chatService.sendMessage(
+        widget.chatRoomId,
+        text,
+        _otherUserPublicKey!,
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to send: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isSending = false);
+    }
+  }
 
   @override
   void dispose() {
@@ -34,6 +106,7 @@ class _ImmersiveChatScreenState extends ConsumerState<ImmersiveChatScreen> {
   @override
   Widget build(BuildContext context) {
     final messagesAsync = ref.watch(messagesProvider(widget.chatRoomId));
+    final currentUid = ref.read(authServiceProvider).currentUserId;
 
     return Scaffold(
       body: Container(
@@ -68,14 +141,18 @@ class _ImmersiveChatScreenState extends ConsumerState<ImmersiveChatScreen> {
             // ─── Content ───────────────────────────
             Column(
               children: [
-                // Header
+                // Header with real name
                 _ChatHeader(
+                  partnerName: _otherUserName ?? 'Loading...',
                   onBack: () => context.pop(),
                   onVideoCall: () {
-                    context.push('/video-call', extra: {
-                      'calleeId': 'remote-user',
-                      'isCaller': true,
-                    });
+                    if (_otherUserId != null) {
+                      context.push('/video-call', extra: {
+                        'calleeId': _otherUserId,
+                        'calleeName': _otherUserName ?? 'User',
+                        'isCaller': true,
+                      });
+                    }
                   },
                 ),
 
@@ -99,6 +176,14 @@ class _ImmersiveChatScreenState extends ConsumerState<ImmersiveChatScreen> {
                                   fontSize: 14,
                                 ),
                               ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'Say hello to ${_otherUserName ?? 'your contact'}!',
+                                style: TextStyle(
+                                  color: AppColors.primary.withValues(alpha: 0.6),
+                                  fontSize: 12,
+                                ),
+                              ),
                             ],
                           ),
                         );
@@ -111,12 +196,9 @@ class _ImmersiveChatScreenState extends ConsumerState<ImmersiveChatScreen> {
                         itemCount: messages.length,
                         itemBuilder: (context, index) {
                           final message = messages[index];
-                          final isMine =
-                              message.senderId ==
-                              ref.read(authServiceProvider).currentUserId;
+                          final isMine = message.senderId == currentUid;
 
-                          // Show timestamp separator for first message
-                          // or when date changes
+                          // Show timestamp separator when date changes
                           Widget? separator;
                           if (index == messages.length - 1 ||
                               messages[index + 1].timestamp.day !=
@@ -128,14 +210,13 @@ class _ImmersiveChatScreenState extends ConsumerState<ImmersiveChatScreen> {
 
                           return Column(
                             children: [
-                              ?separator,
-                              _MessageBubble(
-                                text: message.cipherText.length > 20
-                                    ? 'Encrypted Message'
-                                    : message.cipherText,
+                              if (separator != null) separator,
+                              // Decrypt and show message
+                              _DecryptedMessageBubble(
+                                message: message,
                                 isMine: isMine,
-                                time: _formatTime(message.timestamp),
-                                isRead: isMine,
+                                remotePublicKey: _otherUserPublicKey,
+                                chatService: ref.read(chatServiceProvider),
                               ),
                             ],
                           );
@@ -152,15 +233,11 @@ class _ImmersiveChatScreenState extends ConsumerState<ImmersiveChatScreen> {
                   ),
                 ),
 
-                // Input bar
+                // Input bar — NOW WIRED TO SEND
                 _MessageInputBar(
                   controller: _messageController,
-                  onSend: () {
-                    if (_messageController.text.trim().isNotEmpty) {
-                      // TODO: Call chatService.sendMessage with encryption
-                      _messageController.clear();
-                    }
-                  },
+                  isSending: _isSending,
+                  onSend: _handleSend,
                 ),
               ],
             ),
@@ -169,12 +246,76 @@ class _ImmersiveChatScreenState extends ConsumerState<ImmersiveChatScreen> {
       ),
     );
   }
+}
+
+// ─── Decrypted Message Bubble ──────────────────────────────
+/// Decrypts each message on-the-fly using the E2EE crypto service.
+class _DecryptedMessageBubble extends StatefulWidget {
+  final dynamic message;
+  final bool isMine;
+  final String? remotePublicKey;
+  final dynamic chatService;
+
+  const _DecryptedMessageBubble({
+    required this.message,
+    required this.isMine,
+    this.remotePublicKey,
+    required this.chatService,
+  });
+
+  @override
+  State<_DecryptedMessageBubble> createState() => _DecryptedMessageBubbleState();
+}
+
+class _DecryptedMessageBubbleState extends State<_DecryptedMessageBubble> {
+  String _decryptedText = '🔒 Decrypting...';
+  bool _hasDecrypted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _decrypt();
+  }
+
+  Future<void> _decrypt() async {
+    if (widget.remotePublicKey == null) {
+      setState(() => _decryptedText = '🔒 Waiting for key...');
+      return;
+    }
+    
+    try {
+      final plainText = await widget.chatService.decryptMessagePayload(
+        widget.message,
+        widget.remotePublicKey!,
+      );
+      if (mounted) {
+        setState(() {
+          _decryptedText = plainText;
+          _hasDecrypted = true;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _decryptedText = '🔒 Decryption failed');
+      }
+    }
+  }
 
   String _formatTime(DateTime dt) {
-    final h = dt.hour > 12 ? dt.hour - 12 : dt.hour;
+    final h = dt.hour > 12 ? dt.hour - 12 : (dt.hour == 0 ? 12 : dt.hour);
     final m = dt.minute.toString().padLeft(2, '0');
     final ampm = dt.hour >= 12 ? 'PM' : 'AM';
     return '$h:$m $ampm';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _MessageBubble(
+      text: _decryptedText,
+      isMine: widget.isMine,
+      time: _formatTime(widget.message.timestamp),
+      isRead: widget.isMine,
+    );
   }
 }
 
@@ -211,10 +352,15 @@ class _GridPainter extends CustomPainter {
 
 // ─── Chat Header ───────────────────────────────────────────
 class _ChatHeader extends StatelessWidget {
+  final String partnerName;
   final VoidCallback onBack;
   final VoidCallback onVideoCall;
 
-  const _ChatHeader({required this.onBack, required this.onVideoCall});
+  const _ChatHeader({
+    required this.partnerName,
+    required this.onBack,
+    required this.onVideoCall,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -252,21 +398,21 @@ class _ChatHeader extends StatelessWidget {
                   ),
                   const SizedBox(width: 12),
 
-                  // Name + Status
-                  const Expanded(
+                  // Name + Status — REAL NAME
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          'Jinx',
-                          style: TextStyle(
+                          partnerName,
+                          style: const TextStyle(
                             color: AppColors.textPrimary,
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        Text(
+                        const Text(
                           'Online',
                           style: TextStyle(
                             color: AppColors.primary,
@@ -338,7 +484,7 @@ class _TimestampSeparator extends StatelessWidget {
     if (timestamp.day == now.day &&
         timestamp.month == now.month &&
         timestamp.year == now.year) {
-      final h = timestamp.hour > 12 ? timestamp.hour - 12 : timestamp.hour;
+      final h = timestamp.hour > 12 ? timestamp.hour - 12 : (timestamp.hour == 0 ? 12 : timestamp.hour);
       final m = timestamp.minute.toString().padLeft(2, '0');
       final ampm = timestamp.hour >= 12 ? 'PM' : 'AM';
       label = 'TODAY, $h:$m $ampm';
@@ -449,20 +595,19 @@ class _MessageBubble extends StatelessWidget {
                   ),
                 ),
 
-                // Read receipt
-                if (isMine) ...[
-                  const SizedBox(height: 4),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        isRead ? 'Read' : 'Sent',
-                        style: TextStyle(
-                          color: AppColors.primary.withValues(alpha: 0.6),
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
-                        ),
+                // Time + Read receipt
+                const SizedBox(height: 4),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      time,
+                      style: TextStyle(
+                        color: AppColors.textMuted.withValues(alpha: 0.5),
+                        fontSize: 10,
                       ),
+                    ),
+                    if (isMine) ...[
                       const SizedBox(width: 4),
                       Icon(
                         Icons.done_all,
@@ -472,8 +617,8 @@ class _MessageBubble extends StatelessWidget {
                             : AppColors.textMuted,
                       ),
                     ],
-                  ),
-                ],
+                  ],
+                ),
               ],
             ),
           ),
@@ -487,10 +632,12 @@ class _MessageBubble extends StatelessWidget {
 class _MessageInputBar extends StatelessWidget {
   final TextEditingController controller;
   final VoidCallback onSend;
+  final bool isSending;
 
   const _MessageInputBar({
     required this.controller,
     required this.onSend,
+    this.isSending = false,
   });
 
   @override
@@ -560,6 +707,7 @@ class _MessageInputBar extends StatelessWidget {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.symmetric(vertical: 12),
                           ),
+                          onSubmitted: (_) => onSend(),
                         ),
                       ),
                       GestureDetector(
@@ -577,7 +725,7 @@ class _MessageInputBar extends StatelessWidget {
 
               // Send button
               GestureDetector(
-                onTap: onSend,
+                onTap: isSending ? null : onSend,
                 child: Container(
                   width: 44,
                   height: 44,
@@ -586,8 +734,16 @@ class _MessageInputBar extends StatelessWidget {
                     gradient: AppDecorations.sentMessageGradient,
                     boxShadow: AppDecorations.neonShadowPrimary,
                   ),
-                  child: const Icon(Icons.send,
-                      color: AppColors.background, size: 20),
+                  child: isSending
+                      ? const Padding(
+                          padding: EdgeInsets.all(12),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: AppColors.background,
+                          ),
+                        )
+                      : const Icon(Icons.send,
+                          color: AppColors.background, size: 20),
                 ),
               ),
             ],

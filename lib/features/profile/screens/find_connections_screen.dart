@@ -8,10 +8,11 @@ import '../../../shared/widgets/ambient_background.dart';
 import '../../../shared/widgets/glass_panel.dart';
 import '../../../shared/widgets/glass_nav_bar.dart';
 import '../../../shared/widgets/neon_avatar.dart';
+import '../../../core/models/user_model.dart';
+import '../../auth/providers/auth_provider.dart';
+import '../../chat/providers/chat_provider.dart';
 
-/// Find connections screen matching `find_neon_connections` design.
-/// Features: glass header with search, pending requests section,
-/// suggested users grid with glass cards, bottom nav.
+/// Find connections screen — NOW with real Firestore user data.
 class FindConnectionsScreen extends ConsumerStatefulWidget {
   const FindConnectionsScreen({super.key});
 
@@ -22,6 +23,8 @@ class FindConnectionsScreen extends ConsumerStatefulWidget {
 
 class _FindConnectionsScreenState extends ConsumerState<FindConnectionsScreen> {
   final _searchController = TextEditingController();
+  List<UserModel> _searchResults = [];
+  bool _isSearching = false;
 
   @override
   void dispose() {
@@ -29,8 +32,58 @@ class _FindConnectionsScreenState extends ConsumerState<FindConnectionsScreen> {
     super.dispose();
   }
 
+  Future<void> _performSearch(String query) async {
+    if (query.trim().isEmpty) {
+      setState(() {
+        _searchResults = [];
+        _isSearching = false;
+      });
+      return;
+    }
+
+    setState(() => _isSearching = true);
+    
+    try {
+      final userService = ref.read(userServiceProvider);
+      final currentUid = ref.read(authServiceProvider).currentUserId;
+      final results = await userService.searchUsers(query, excludeUid: currentUid);
+      if (mounted) {
+        setState(() {
+          _searchResults = results;
+          _isSearching = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isSearching = false);
+      }
+    }
+  }
+
+  /// Start a chat with a user
+  Future<void> _startChat(UserModel user) async {
+    try {
+      final chatService = ref.read(chatServiceProvider);
+      final roomId = await chatService.createOrGetChatRoom(user.uid);
+      if (mounted) {
+        context.push('/chat/$roomId');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final allUsersAsync = ref.watch(allUsersProvider);
+
     return Scaffold(
       body: AmbientBackground.standard(
         child: Stack(
@@ -41,6 +94,7 @@ class _FindConnectionsScreenState extends ConsumerState<FindConnectionsScreen> {
                 _SearchHeader(
                   controller: _searchController,
                   onBack: () => context.pop(),
+                  onSearch: _performSearch,
                 ),
 
                 // ─── Content ─────────────────────────
@@ -50,12 +104,101 @@ class _FindConnectionsScreenState extends ConsumerState<FindConnectionsScreen> {
                       left: 16, right: 16, top: 8, bottom: 100,
                     ),
                     children: [
-                      // Pending Requests
-                      _PendingRequestsSection(),
-                      const SizedBox(height: 32),
+                      // Show search results if searching
+                      if (_searchController.text.isNotEmpty) ...[
+                        _SectionTitle('Search Results'),
+                        const SizedBox(height: 12),
+                        if (_isSearching)
+                          const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(32),
+                              child: CircularProgressIndicator(
+                                  color: AppColors.primary),
+                            ),
+                          )
+                        else if (_searchResults.isEmpty)
+                          Padding(
+                            padding: const EdgeInsets.all(32),
+                            child: Center(
+                              child: Text(
+                                'No users found for "${_searchController.text}"',
+                                style: TextStyle(
+                                    color: AppColors.textMuted, fontSize: 14),
+                              ),
+                            ),
+                          )
+                        else
+                          ..._searchResults.map((user) => Padding(
+                                padding: const EdgeInsets.only(bottom: 12),
+                                child: _UserCard(
+                                  user: user,
+                                  onConnect: () => _startChat(user),
+                                  isFilled: true,
+                                ),
+                              )),
+                      ] else ...[
+                        // Show all available users
+                        _SectionTitle('Available Users'),
+                        const SizedBox(height: 12),
+                        allUsersAsync.when(
+                          data: (users) {
+                            if (users.isEmpty) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 60),
+                                child: Column(
+                                  children: [
+                                    Icon(Icons.people_outline,
+                                        size: 64,
+                                        color: AppColors.textMuted.withValues(alpha: 0.3)),
+                                    const SizedBox(height: 20),
+                                    const Text(
+                                      'No Users Yet',
+                                      style: TextStyle(
+                                        color: AppColors.textPrimary,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    const Text(
+                                      'Be the first to join!\nShare the app with friends.',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: AppColors.textMuted,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
 
-                      // Suggested for You
-                      _SuggestedSection(),
+                            return Column(
+                              children: List.generate(users.length, (i) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 12),
+                                  child: _UserCard(
+                                    user: users[i],
+                                    onConnect: () => _startChat(users[i]),
+                                    isFilled: i == 0,
+                                  ),
+                                );
+                              }),
+                            );
+                          },
+                          loading: () => const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(32),
+                              child: CircularProgressIndicator(
+                                  color: AppColors.primary),
+                            ),
+                          ),
+                          error: (err, _) => Center(
+                            child: Text('Error: $err',
+                                style: const TextStyle(color: AppColors.error)),
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -82,12 +225,36 @@ class _FindConnectionsScreenState extends ConsumerState<FindConnectionsScreen> {
   }
 }
 
+// ─── Section Title ─────────────────────────────────────────
+class _SectionTitle extends StatelessWidget {
+  final String title;
+  const _SectionTitle(this.title);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title.toUpperCase(),
+      style: TextStyle(
+        color: AppColors.white50,
+        fontSize: 11,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 2,
+      ),
+    );
+  }
+}
+
 // ─── Search Header ─────────────────────────────────────────
 class _SearchHeader extends StatelessWidget {
   final TextEditingController controller;
   final VoidCallback onBack;
+  final ValueChanged<String> onSearch;
 
-  const _SearchHeader({required this.controller, required this.onBack});
+  const _SearchHeader({
+    required this.controller,
+    required this.onBack,
+    required this.onSearch,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +285,7 @@ class _SearchHeader extends StatelessWidget {
                       const Expanded(
                         child: Center(
                           child: Text(
-                            'Loopin J',
+                            'Find Connections',
                             style: TextStyle(
                               color: AppColors.textPrimary,
                               fontSize: 20,
@@ -128,36 +295,12 @@ class _SearchHeader extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // Notification bell with dot
-                      Stack(
-                        children: [
-                          const Icon(Icons.notifications,
-                              color: AppColors.textSecondary, size: 24),
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            child: Container(
-                              width: 8,
-                              height: 8,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.primary,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppColors.primary.withValues(alpha: 0.6),
-                                    blurRadius: 4,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      const SizedBox(width: 48),
                     ],
                   ),
                   const SizedBox(height: 12),
 
-                  // Search bar
+                  // Search bar — NOW FUNCTIONAL
                   Container(
                     height: 52,
                     decoration: BoxDecoration(
@@ -182,12 +325,13 @@ class _SearchHeader extends StatelessWidget {
                         Expanded(
                           child: TextField(
                             controller: controller,
+                            onChanged: onSearch,
                             style: const TextStyle(
                               color: AppColors.textPrimary,
                               fontSize: 15,
                             ),
                             decoration: const InputDecoration(
-                              hintText: 'Search username or tag...',
+                              hintText: 'Search by name...',
                               hintStyle: TextStyle(
                                 color: AppColors.textMuted,
                                 fontSize: 15,
@@ -197,8 +341,15 @@ class _SearchHeader extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const Icon(Icons.tune,
-                            color: AppColors.textMuted, size: 20),
+                        if (controller.text.isNotEmpty)
+                          GestureDetector(
+                            onTap: () {
+                              controller.clear();
+                              onSearch('');
+                            },
+                            child: const Icon(Icons.close,
+                                color: AppColors.textMuted, size: 20),
+                          ),
                       ],
                     ),
                   ),
@@ -212,231 +363,17 @@ class _SearchHeader extends StatelessWidget {
   }
 }
 
-// ─── Pending Requests ──────────────────────────────────────
-class _PendingRequestsSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Section header
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                const Text(
-                  'Pending Requests',
-                  style: TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Container(
-                  width: 22,
-                  height: 22,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.primary.withValues(alpha: 0.2),
-                    border: Border.all(
-                      color: AppColors.primary.withValues(alpha: 0.3),
-                    ),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      '3',
-                      style: TextStyle(
-                        color: AppColors.primary,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            GestureDetector(
-              onTap: () {},
-              child: const Text(
-                'View All',
-                style: TextStyle(
-                  color: AppColors.primary,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-
-        // Requests card
-        GlassPanel(
-          borderRadius: 16,
-          child: Column(
-            children: [
-              _RequestItem(
-                name: 'Cyber_Kate',
-                subtitle: 'Mutual: GlitchWizard',
-                isOnline: true,
-              ),
-              Divider(color: AppColors.white5, height: 1),
-              _RequestItem(
-                name: 'Neo_John',
-                subtitle: 'Sent you a request',
-                isOnline: false,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _RequestItem extends StatelessWidget {
-  final String name;
-  final String subtitle;
-  final bool isOnline;
-
-  const _RequestItem({
-    required this.name,
-    required this.subtitle,
-    required this.isOnline,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        children: [
-          NeonAvatar(
-            size: 48,
-            showOnlineIndicator: isOnline,
-            showRing: false,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  subtitle,
-                  style: const TextStyle(
-                    color: AppColors.textMuted,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Reject
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.white5,
-              ),
-              child: const Icon(Icons.close,
-                  color: AppColors.textMuted, size: 18),
-            ),
-          ),
-          const SizedBox(width: 8),
-
-          // Accept
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.primary.withValues(alpha: 0.1),
-              ),
-              child: const Icon(Icons.check,
-                  color: AppColors.primary, size: 18),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ─── Suggested Users ───────────────────────────────────────
-class _SuggestedSection extends StatelessWidget {
-  static const _users = [
-    _SuggestedUser('GlitchWizard', 'Dev', 'Digital nomad wandering the net.', true),
-    _SuggestedUser('Future_Fox', 'Artist', 'Creating neon dreams in VR.', false),
-    _SuggestedUser('Aura_L', 'Music', 'Synthwave producer & DJ.', false),
-    _SuggestedUser('Byte_Me', 'Gamer', 'Competitive FPS player.', false),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'Suggested for You',
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            GestureDetector(
-              onTap: () {},
-              child: const Icon(Icons.filter_list,
-                  color: AppColors.textMuted, size: 22),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-
-        ...List.generate(_users.length, (i) {
-          final user = _users[i];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: _SuggestedCard(user: user, isFilled: i == 0),
-          );
-        }),
-      ],
-    );
-  }
-}
-
-class _SuggestedUser {
-  final String name;
-  final String tag;
-  final String bio;
-  final bool isFirstCard;
-  const _SuggestedUser(this.name, this.tag, this.bio, this.isFirstCard);
-}
-
-class _SuggestedCard extends StatelessWidget {
-  final _SuggestedUser user;
+// ─── User Card ─────────────────────────────────────────────
+class _UserCard extends StatelessWidget {
+  final UserModel user;
+  final VoidCallback onConnect;
   final bool isFilled;
 
-  const _SuggestedCard({required this.user, this.isFilled = false});
+  const _UserCard({
+    required this.user,
+    required this.onConnect,
+    this.isFilled = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -464,93 +401,81 @@ class _SuggestedCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          user.name,
-                          style: const TextStyle(
-                            color: AppColors.textPrimary,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: AppColors.white5,
-                            borderRadius: BorderRadius.circular(9999),
-                            border: Border.all(color: AppColors.white5),
-                          ),
+                        Flexible(
                           child: Text(
-                            user.tag.toUpperCase(),
+                            user.displayName,
+                            overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                              color: AppColors.white50,
-                              fontSize: 9,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1.5,
+                              color: AppColors.textPrimary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 2),
                     Text(
-                      user.bio,
+                      user.email,
                       style: const TextStyle(
                         color: AppColors.textMuted,
                         fontSize: 12,
                       ),
                     ),
                     const SizedBox(height: 10),
-                    // Connect button
-                    SizedBox(
-                      width: double.infinity,
-                      height: 36,
-                      child: isFilled
-                          ? Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(9999),
-                                boxShadow: AppDecorations.neonShadowPrimary,
-                              ),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.add,
-                                      color: Colors.black, size: 18),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    'Connect',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
+                    // Chat button — starts a real chat
+                    GestureDetector(
+                      onTap: onConnect,
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 36,
+                        child: isFilled
+                            ? Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(9999),
+                                  boxShadow: AppDecorations.neonShadowPrimary,
+                                ),
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.chat_bubble,
+                                        color: Colors.black, size: 18),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      'Start Chat',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(9999),
-                                border: Border.all(color: AppColors.primary),
-                              ),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.add,
-                                      color: AppColors.primary, size: 18),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    'Connect',
-                                    style: TextStyle(
-                                      color: AppColors.primary,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
+                                  ],
+                                ),
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(9999),
+                                  border: Border.all(color: AppColors.primary),
+                                ),
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.chat_bubble_outline,
+                                        color: AppColors.primary, size: 18),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      'Start Chat',
+                                      style: TextStyle(
+                                        color: AppColors.primary,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
+                      ),
                     ),
                   ],
                 ),

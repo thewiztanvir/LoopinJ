@@ -3,9 +3,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'auth_service.dart';
 import '../../../core/services/crypto_service.dart';
+import '../../../core/services/user_service.dart';
 import '../../../core/models/user_model.dart';
 
 final cryptoServiceProvider = Provider<CryptoService>((ref) => CryptoService());
+final userServiceProvider = Provider<UserService>((ref) => UserService());
+
+/// Fetch any user by their UID — used to resolve names in chat, calls, etc.
+final userByIdProvider = FutureProvider.family<UserModel?, String>((ref, uid) {
+  return ref.watch(userServiceProvider).getUserById(uid);
+});
+
+/// Fetch all users except current (for Find Connections)
+final allUsersProvider = FutureProvider<List<UserModel>>((ref) {
+  final authService = ref.watch(authServiceProvider);
+  return ref.watch(userServiceProvider).getAllUsers(
+    excludeUid: authService.currentUserId,
+  );
+});
 
 final authServiceProvider = Provider<AuthService>((ref) {
   final cryptoService = ref.watch(cryptoServiceProvider);

@@ -63,6 +63,7 @@ final GoRouter appRouter = GoRouter(
         final extra = state.extra as Map<String, dynamic>? ?? {};
         return VideoCallScreen(
           calleeId: extra['calleeId'] ?? '',
+          calleeName: extra['calleeName'] ?? 'User',
           isCaller: extra['isCaller'] ?? true,
         );
       },

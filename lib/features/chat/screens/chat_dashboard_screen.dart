@@ -8,6 +8,7 @@ import '../../../shared/widgets/ambient_background.dart';
 import '../../../shared/widgets/glass_nav_bar.dart';
 import '../../../shared/widgets/neon_avatar.dart';
 import '../providers/chat_provider.dart';
+import '../../auth/providers/auth_provider.dart';
 
 /// Chat dashboard matching `neon_chat_dashboard` design.
 /// Features: user header, search bar, active users strip, glass chat cards
@@ -18,6 +19,7 @@ class ChatDashboardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chatRoomsAsync = ref.watch(chatRoomsProvider);
+    final currentUserAsync = ref.watch(currentUserModelProvider);
 
     return Scaffold(
       body: AmbientBackground.dashboard(
@@ -26,8 +28,8 @@ class ChatDashboardScreen extends ConsumerWidget {
             // ─── Main Content ────────────────────────
             Column(
               children: [
-                // Header
-                _DashboardHeader(ref: ref),
+                // Header — show real user name
+                _DashboardHeader(ref: ref, currentUserAsync: currentUserAsync),
 
                 // Scrollable content
                 Expanded(
@@ -38,25 +40,48 @@ class ChatDashboardScreen extends ConsumerWidget {
                           left: 16, right: 16, top: 8, bottom: 100,
                         ),
                         children: [
-                          // Active Now strip
-                          _ActiveNowSection(),
+                          // Active Now strip — show real connected users
+                          _ActiveNowSection(ref: ref),
                           const SizedBox(height: 16),
 
                           // Chat list
                           if (chatRooms.isEmpty)
                             _EmptyState()
                           else
-                            ...chatRooms.map((room) => _ChatCard(
-                                  title: room.lastMessage != null
-                                      ? 'Secure Loop'
-                                      : 'Secure Loop',
-                                  subtitle: room.lastMessage ?? 'Tap to chat',
+                            ...chatRooms.map((room) {
+                              // Resolve the other participant's name
+                              final currentUid = ref.read(authServiceProvider).currentUserId;
+                              final otherUid = room.participantIds
+                                  .firstWhere((id) => id != currentUid, orElse: () => '');
+                              final otherUserAsync = ref.watch(userByIdProvider(otherUid));
+
+                              return otherUserAsync.when(
+                                data: (otherUser) => _ChatCard(
+                                  title: otherUser?.displayName ?? 'Unknown User',
+                                  subtitle: room.lastMessage ?? 'Tap to start chatting',
                                   time: _formatTime(room.updatedAt),
-                                  unreadCount: room.unreadCounts.values
-                                      .fold(0, (a, b) => a + b),
+                                  unreadCount: room.unreadCounts[currentUid] ?? 0,
                                   isOnline: true,
                                   onTap: () => context.push('/chat/${room.id}'),
-                                )),
+                                ),
+                                loading: () => _ChatCard(
+                                  title: 'Loading...',
+                                  subtitle: '',
+                                  time: '',
+                                  unreadCount: 0,
+                                  isOnline: false,
+                                  onTap: () {},
+                                ),
+                                error: (_, __) => _ChatCard(
+                                  title: 'Unknown',
+                                  subtitle: '',
+                                  time: '',
+                                  unreadCount: 0,
+                                  isOnline: false,
+                                  onTap: () => context.push('/chat/${room.id}'),
+                                ),
+                              );
+                            }),
                         ],
                       );
                     },
@@ -123,10 +148,17 @@ class ChatDashboardScreen extends ConsumerWidget {
 // ─── Header ────────────────────────────────────────────────
 class _DashboardHeader extends StatelessWidget {
   final WidgetRef ref;
-  const _DashboardHeader({required this.ref});
+  final AsyncValue<dynamic> currentUserAsync;
+  const _DashboardHeader({required this.ref, required this.currentUserAsync});
 
   @override
   Widget build(BuildContext context) {
+    // Extract real user name
+    String displayName = 'Loopin J';
+    if (currentUserAsync.hasValue && currentUserAsync.value != null) {
+      displayName = (currentUserAsync.value?.displayName as String?) ?? 'Loopin J';
+    }
+
     return SafeArea(
       bottom: false,
       child: Padding(
@@ -143,7 +175,7 @@ class _DashboardHeader extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Loopin J',
+                        displayName.toString(),
                         style: TextStyle(
                           color: AppColors.textPrimary,
                           fontSize: 20,
@@ -233,17 +265,14 @@ class _DashboardHeader extends StatelessWidget {
 
 // ─── Active Now Strip ──────────────────────────────────────
 class _ActiveNowSection extends StatelessWidget {
-  // Mock data matching the design reference
-  static const _activeUsers = [
-    _ActiveUser('Cyber', true, true),
-    _ActiveUser('Nova', true, false),
-    _ActiveUser('Jinx', true, true),
-    _ActiveUser('K-9', true, false),
-    _ActiveUser('Trinity', true, false),
-  ];
+  final WidgetRef ref;
+  const _ActiveNowSection({required this.ref});
 
   @override
   Widget build(BuildContext context) {
+    // Show real users from Firestore instead of hardcoded mock data
+    final allUsersAsync = ref.watch(allUsersProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -261,48 +290,74 @@ class _ActiveNowSection extends StatelessWidget {
         ),
         SizedBox(
           height: 80,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            itemCount: _activeUsers.length,
-            separatorBuilder: (_, i) => const SizedBox(width: 16),
-            itemBuilder: (context, index) {
-              final user = _activeUsers[index];
-              return Column(
-                children: [
-                  NeonAvatar(
-                    size: 56,
-                    showOnlineIndicator: true,
-                    isOnline: user.isOnline,
-                    showRing: user.hasGradientRing,
-                    ringGradient: index == 2
-                        ? AppDecorations.avatarRingPinkGradient
-                        : null,
+          child: allUsersAsync.when(
+            data: (users) {
+              if (users.isEmpty) {
+                return Center(
+                  child: Text(
+                    'No users yet — invite friends!',
+                    style: TextStyle(color: AppColors.textMuted, fontSize: 12),
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    user.name,
-                    style: const TextStyle(
-                      color: AppColors.white80,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
+                );
+              }
+              return ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                itemCount: users.length,
+                separatorBuilder: (_, i) => const SizedBox(width: 16),
+                itemBuilder: (context, index) {
+                  final user = users[index];
+                  return GestureDetector(
+                    onTap: () async {
+                      // Create/get chat room and navigate to it
+                      final chatService = ref.read(chatServiceProvider);
+                      final roomId = await chatService.createOrGetChatRoom(user.uid);
+                      if (context.mounted) {
+                        context.push('/chat/$roomId');
+                      }
+                    },
+                    child: Column(
+                      children: [
+                        NeonAvatar(
+                          size: 56,
+                          showOnlineIndicator: true,
+                          isOnline: true,
+                          showRing: index < 3,
+                          ringGradient: index == 2
+                              ? AppDecorations.avatarRingPinkGradient
+                              : null,
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          user.displayName.length > 8
+                              ? '${user.displayName.substring(0, 8)}…'
+                              : user.displayName,
+                          style: const TextStyle(
+                            color: AppColors.white80,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                  );
+                },
               );
             },
+            loading: () => const Center(
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                    strokeWidth: 2, color: AppColors.primary),
+              ),
+            ),
+            error: (_, __) => const SizedBox.shrink(),
           ),
         ),
       ],
     );
   }
-}
-
-class _ActiveUser {
-  final String name;
-  final bool isOnline;
-  final bool hasGradientRing;
-  const _ActiveUser(this.name, this.isOnline, this.hasGradientRing);
 }
 
 // ─── Chat Card ─────────────────────────────────────────────

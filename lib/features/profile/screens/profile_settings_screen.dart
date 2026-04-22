@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_decorations.dart';
 import '../../../shared/widgets/glass_panel.dart';
@@ -244,14 +246,40 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
                             NeonButton(
                               text: 'Save Changes',
                               icon: Icons.save,
-                              onPressed: () {
-                                // TODO: Update display name
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Changes saved'),
-                                    backgroundColor: AppColors.primary,
-                                  ),
-                                );
+                              onPressed: () async {
+                                final newName = _displayNameController.text.trim();
+                                if (newName.isEmpty) return;
+                                try {
+                                  final uid = FirebaseAuth.instance.currentUser?.uid;
+                                  if (uid != null) {
+                                    await FirebaseFirestore.instance
+                                        .collection('users')
+                                        .doc(uid)
+                                        .update({
+                                      'displayName': newName,
+                                      'displayNameLower': newName.toLowerCase(),
+                                    });
+                                    await FirebaseAuth.instance.currentUser?.updateDisplayName(newName);
+                                    ref.invalidate(currentUserModelProvider);
+                                    if (context.mounted) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Profile updated!'),
+                                          backgroundColor: AppColors.primary,
+                                        ),
+                                      );
+                                    }
+                                  }
+                                } catch (e) {
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Error: $e'),
+                                        backgroundColor: AppColors.error,
+                                      ),
+                                    );
+                                  }
+                                }
                               },
                             ),
                           ],
@@ -270,8 +298,10 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
                             _SettingsMenuItem(
                               icon: Icons.mail,
                               title: 'Update Email',
-                              subtitle: 'user@loopin.com',
-                              onTap: () {},
+                              subtitle: FirebaseAuth.instance.currentUser?.email ?? 'No email',
+                              onTap: () {
+                                // TODO: Email update flow
+                              },
                             ),
                             Divider(color: AppColors.white5, height: 1),
                             _SettingsMenuItem(

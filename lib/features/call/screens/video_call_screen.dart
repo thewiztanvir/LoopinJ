@@ -13,11 +13,13 @@ import '../../call/providers/call_provider.dart';
 /// 5-button glass control dock (Mute, Video, End, Flip, Chat).
 class VideoCallScreen extends ConsumerStatefulWidget {
   final String calleeId;
+  final String calleeName;
   final bool isCaller;
 
   const VideoCallScreen({
     super.key,
     required this.calleeId,
+    this.calleeName = 'User',
     required this.isCaller,
   });
 
@@ -49,10 +51,44 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
   Future<void> _initRenderers() async {
     await _localRenderer.initialize();
     await _remoteRenderer.initialize();
-    // TODO: Wire up WebRTC service callbacks
-    // final webrtcService = ref.read(webRTCServiceProvider);
-    // webrtcService.onLocalStream = (stream) { _localRenderer.srcObject = stream; };
-    // webrtcService.onRemoteStream = (stream) { _remoteRenderer.srcObject = stream; };
+    
+    // Wire up WebRTC service callbacks
+    final webrtcService = ref.read(webRTCServiceProvider);
+    
+    webrtcService.onLocalStream = (stream) {
+      if (mounted) {
+        setState(() {
+          _localRenderer.srcObject = stream;
+        });
+      }
+    };
+    
+    webrtcService.onRemoteStream = (stream) {
+      if (mounted) {
+        setState(() {
+          _remoteRenderer.srcObject = stream;
+        });
+      }
+    };
+    
+    webrtcService.onConnectionState = (state) {
+      if (mounted) {
+        // Handle connection state changes
+        print('WebRTC Connection State: $state');
+      }
+    };
+    
+    // Initialize local media stream
+    try {
+      await webrtcService.initLocalStream(true);
+      
+      // If we are the caller, initiate the call
+      if (widget.isCaller && widget.calleeId.isNotEmpty) {
+        await webrtcService.makeCall(widget.calleeId);
+      }
+    } catch (e) {
+      print('Failed to init media: $e');
+    }
   }
 
   void _startTimer() {
@@ -126,7 +162,7 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
                   children: [
                     // Caller Name
                     Text(
-                      'Sarah Connor',
+                      widget.calleeName,
                       style: TextStyle(
                         color: AppColors.textPrimary,
                         fontSize: 28,
@@ -326,8 +362,10 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
                             icon: _isMuted ? Icons.mic_off : Icons.mic,
                             label: 'Mute',
                             isActive: _isMuted,
-                            onTap: () =>
-                                setState(() => _isMuted = !_isMuted),
+                            onTap: () {
+                              setState(() => _isMuted = !_isMuted);
+                              ref.read(webRTCServiceProvider).toggleMute(_isMuted);
+                            },
                           ),
                           _ControlButton(
                             icon: _isVideoOff
@@ -335,8 +373,10 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
                                 : Icons.videocam,
                             label: 'Video',
                             isActive: _isVideoOff,
-                            onTap: () =>
-                                setState(() => _isVideoOff = !_isVideoOff),
+                            onTap: () {
+                              setState(() => _isVideoOff = !_isVideoOff);
+                              ref.read(webRTCServiceProvider).toggleCamera(!_isVideoOff);
+                            },
                           ),
                           _EndCallButton(onTap: _handleEndCall),
                           _ControlButton(
