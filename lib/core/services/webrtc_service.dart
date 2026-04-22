@@ -1,6 +1,5 @@
-import 'dart:convert';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 typedef PeerConnectionStateCallback = void Function(RTCPeerConnectionState state);
 typedef LocalStreamCallback = void Function(MediaStream stream);
@@ -8,7 +7,7 @@ typedef RemoteStreamCallback = void Function(MediaStream stream);
 typedef IncomingCallCallback = void Function(String callerId);
 
 class WebRTCService {
-  IO.Socket? _socket;
+  io.Socket? _socket;
   RTCPeerConnection? _peerConnection;
   MediaStream? _localStream;
   MediaStream? _remoteStream;
@@ -44,7 +43,7 @@ class WebRTCService {
   void connect(String userId) {
     _currentUserId = userId;
     
-    _socket = IO.io(_signalingServerUrl, <String, dynamic>{
+    _socket = io.io(_signalingServerUrl, <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': true,
     });

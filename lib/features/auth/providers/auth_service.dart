@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../core/models/user_model.dart';
@@ -27,6 +28,7 @@ class AuthService {
 
   Future<UserModel> signUpWithEmail(String email, String password, String displayName) async {
     try {
+      developer.log('Attempting signUp with email: $email', name: 'AuthService');
       final UserCredential cred = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -47,7 +49,14 @@ class AuthService {
       await cred.user!.updateDisplayName(displayName);
 
       return userModel;
+    } on FirebaseAuthException catch (e) {
+      developer.log('FirebaseAuthException: code=${e.code}, message=${e.message}', name: 'AuthService');
+      throw Exception('Sign up failed [${e.code}]: ${e.message}');
     } catch (e) {
+      developer.log('Sign up error: type=${e.runtimeType}, error=$e', name: 'AuthService');
+      // Print full details for web debugging
+      print('SIGN_UP_ERROR type: ${e.runtimeType}');
+      print('SIGN_UP_ERROR details: $e');
       throw Exception('Failed to sign up: $e');
     }
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../features/auth/screens/welcome_splash_screen.dart';
 import '../../features/auth/screens/login_screen.dart';
 import '../../features/auth/screens/register_screen.dart';
 import '../../features/chat/screens/chat_dashboard_screen.dart';
@@ -13,18 +14,26 @@ final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final GoRouter appRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '/login',
+  initialLocation: '/',
   redirect: (context, state) {
-    // Basic synchronous check for Firebase Auth
     final isLoggedIn = FirebaseAuth.instance.currentUser != null;
-    final isLoggingIn = state.matchedLocation == '/login' || state.matchedLocation == '/register';
+    final isAuthRoute = state.matchedLocation == '/' ||
+        state.matchedLocation == '/login' ||
+        state.matchedLocation == '/register';
 
-    if (!isLoggedIn && !isLoggingIn) return '/login';
-    if (isLoggedIn && isLoggingIn) return '/home';
+    // Unauthenticated users can only access auth routes
+    if (!isLoggedIn && !isAuthRoute) return '/';
+    // Authenticated users trying to access auth routes -> home
+    if (isLoggedIn && isAuthRoute) return '/home';
 
     return null;
   },
   routes: [
+    // ─── Auth ──────────────────────────────────────
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const WelcomeSplashScreen(),
+    ),
     GoRoute(
       path: '/login',
       builder: (context, state) => const LoginScreen(),
@@ -33,6 +42,8 @@ final GoRouter appRouter = GoRouter(
       path: '/register',
       builder: (context, state) => const RegisterScreen(),
     ),
+
+    // ─── Chat ──────────────────────────────────────
     GoRoute(
       path: '/home',
       builder: (context, state) => const ChatDashboardScreen(),
@@ -44,14 +55,20 @@ final GoRouter appRouter = GoRouter(
         return ImmersiveChatScreen(chatRoomId: roomId);
       },
     ),
+
+    // ─── Call ──────────────────────────────────────
     GoRoute(
-      path: '/call/:remoteUserId',
+      path: '/video-call',
       builder: (context, state) {
-        final remoteUserId = state.pathParameters['remoteUserId']!;
-        final isCaller = state.uri.queryParameters['isCaller'] == 'true';
-        return VideoCallScreen(remoteUserId: remoteUserId, isCaller: isCaller);
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        return VideoCallScreen(
+          calleeId: extra['calleeId'] ?? '',
+          isCaller: extra['isCaller'] ?? true,
+        );
       },
     ),
+
+    // ─── Profile ──────────────────────────────────
     GoRoute(
       path: '/find-connections',
       builder: (context, state) => const FindConnectionsScreen(),
@@ -62,23 +79,3 @@ final GoRouter appRouter = GoRouter(
     ),
   ],
 );
-
-// Temporary placeholder screen for routing tests
-class PlaceholderScreen extends StatelessWidget {
-  final String title;
-  const PlaceholderScreen({super.key, required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Center(
-        child: Text(
-          title, 
-          style: Theme.of(context).textTheme.displayMedium,
-          textAlign: TextAlign.center,
-        ),
-      ),
-    );
-  }
-}

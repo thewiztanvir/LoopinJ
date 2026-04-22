@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cryptography/cryptography.dart';
 import '../models/chat_room_model.dart';
 import '../models/message_model.dart';
 import '../../../core/services/crypto_service.dart';
