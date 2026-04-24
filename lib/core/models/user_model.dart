@@ -37,6 +37,7 @@ class UserModel {
     return {
       'email': email,
       'displayName': displayName,
+      'displayNameLower': displayName.toLowerCase(),
       'photoUrl': photoUrl,
       'publicKey': publicKey,
       'createdAt': createdAt.toIso8601String(),

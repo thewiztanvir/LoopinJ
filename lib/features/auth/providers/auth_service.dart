@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/services/crypto_service.dart';
+import '../../../core/services/user_service.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -64,6 +65,10 @@ class AuthService {
   Future<void> signInWithEmail(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+      // Backfill displayNameLower for any existing users missing it
+      // This is a one-time migration that runs silently in the background
+      UserService().backfillDisplayNameLower();
     } on FirebaseAuthException catch (e) {
       throw Exception('Failed to sign in: ${e.message}');
     }

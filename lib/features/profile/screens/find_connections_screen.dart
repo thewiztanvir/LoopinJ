@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,6 +28,14 @@ class _FindConnectionsScreenState extends ConsumerState<FindConnectionsScreen> {
   bool _isSearching = false;
 
   @override
+  void initState() {
+    super.initState();
+    // Backfill displayNameLower for any existing users missing it
+    // This runs once when the screen opens to migrate old accounts
+    ref.read(userServiceProvider).backfillDisplayNameLower();
+  }
+
+  @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
@@ -54,6 +63,7 @@ class _FindConnectionsScreenState extends ConsumerState<FindConnectionsScreen> {
         });
       }
     } catch (e) {
+      developer.log('Search error: $e', name: 'FindConnections');
       if (mounted) {
         setState(() => _isSearching = false);
       }

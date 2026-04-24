@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user_model.dart';
 
@@ -39,23 +40,45 @@ class UserService {
   Future<List<UserModel>> searchUsers(String query, {String? excludeUid}) async {
     if (query.trim().isEmpty) return [];
 
-    // Firestore doesn't support full-text search natively.
-    // We use a prefix range query on the displayName field.
     final lowerQuery = query.toLowerCase();
-    final upperBound = '${lowerQuery.substring(0, lowerQuery.length - 1)}${String.fromCharCode(lowerQuery.codeUnitAt(lowerQuery.length - 1) + 1)}';
 
-    final snapshot = await _firestore
-        .collection('users')
-        .where('displayNameLower', isGreaterThanOrEqualTo: lowerQuery)
-        .where('displayNameLower', isLessThan: upperBound)
-        .limit(20)
-        .get();
+    // Strategy 1: Try Firestore prefix query on displayNameLower
+    try {
+      final upperBound = '${lowerQuery.substring(0, lowerQuery.length - 1)}${String.fromCharCode(lowerQuery.codeUnitAt(lowerQuery.length - 1) + 1)}';
+      
+      developer.log('Searching users: query="$lowerQuery"', name: 'UserService');
+      
+      final snapshot = await _firestore
+          .collection('users')
+          .where('displayNameLower', isGreaterThanOrEqualTo: lowerQuery)
+          .where('displayNameLower', isLessThan: upperBound)
+          .limit(20)
+          .get();
 
-    final users = snapshot.docs
+      if (snapshot.docs.isNotEmpty) {
+        developer.log('Firestore query returned ${snapshot.docs.length} results', name: 'UserService');
+        return snapshot.docs
+            .map((doc) => UserModel.fromMap(doc.data(), doc.id))
+            .where((u) => excludeUid == null || u.uid != excludeUid)
+            .toList();
+      }
+    } catch (e) {
+      developer.log('Firestore search failed, using fallback: $e', name: 'UserService');
+    }
+
+    // Strategy 2: Fallback — fetch all users and filter client-side
+    // This handles the case where displayNameLower doesn't exist on old docs
+    developer.log('Falling back to client-side search', name: 'UserService');
+    final allSnapshot = await _firestore.collection('users').limit(50).get();
+    final users = allSnapshot.docs
         .map((doc) => UserModel.fromMap(doc.data(), doc.id))
         .where((u) => excludeUid == null || u.uid != excludeUid)
+        .where((u) =>
+            u.displayName.toLowerCase().contains(lowerQuery) ||
+            u.email.toLowerCase().contains(lowerQuery))
         .toList();
 
+    developer.log('Client-side search found ${users.length} results', name: 'UserService');
     return users;
   }
 
@@ -67,4 +90,33 @@ class UserService {
         .where((u) => excludeUid == null || u.uid != excludeUid)
         .toList();
   }
+
+  /// Backfill 'displayNameLower' for existing users who don't have it.
+  /// Call this once on sign-in to migrate old accounts.
+  Future<void> backfillDisplayNameLower() async {
+    try {
+      final snapshot = await _firestore.collection('users').get();
+      final batch = _firestore.batch();
+      int count = 0;
+
+      for (final doc in snapshot.docs) {
+        final data = doc.data();
+        if (!data.containsKey('displayNameLower') || data['displayNameLower'] == null) {
+          final displayName = data['displayName'] ?? '';
+          batch.update(doc.reference, {
+            'displayNameLower': displayName.toString().toLowerCase(),
+          });
+          count++;
+        }
+      }
+
+      if (count > 0) {
+        await batch.commit();
+        developer.log('Backfilled displayNameLower for $count users', name: 'UserService');
+      }
+    } catch (e) {
+      developer.log('Backfill error: $e', name: 'UserService');
+    }
+  }
 }
+
